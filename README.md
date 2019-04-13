@@ -1,6 +1,6 @@
 
-An e-commerce app using python/django
-=====================================
+E-commerce app based on python/django
+========================================
 
 ## SYNOPSIS
 
