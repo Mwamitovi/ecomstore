@@ -2,6 +2,7 @@
 
 # project files
 /migrations
+base_settings.py
 db.sqlite3
 manage.py
 
