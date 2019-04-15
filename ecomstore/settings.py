@@ -50,7 +50,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             # We are telling django.template.loaders.filesystem.Loader:
-            # to look into C:\virtualenvs\myproject_env\project\ecomstore\templates\(index.html)
+            # to look into C:\virtualenvs\...\ecomstore\templates\(index.html)
             # The last part in brackets is generated from views.py - template_name
             os.path.join(BASE_DIR, "templates")
         ],
