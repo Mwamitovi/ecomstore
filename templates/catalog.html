@@ -1,3 +1,4 @@
+{# templates/catalog.html #}
 {% extends "base.html" %}
 
 {% block site_wrapper %}
@@ -13,7 +14,8 @@
     </div>
     <div id="navigation">
         <div class="navIEPadder">
-            [navigation here]
+            <!-- [navigation here] -->
+            {% include "tags/navigation.html" %}
         </div>
     </div>
     <div id="middle">
