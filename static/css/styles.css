@@ -7,11 +7,11 @@
 
 html{
 	font-size:medium;
-}
+	}
 
-html,body{
-	background-color:Silver;
-}
+	html, body{
+		background-color:Silver;
+	}
 
 .cb{
 	clear:both;
@@ -61,11 +61,11 @@ div.cart_box{
 	top:10px;
 	right:10px;
 	font-size:medium;
-}
+	}
 
-div.cart_box a{
-	color:white;
-}
+	div.cart_box a{
+		color:white;
+	}
 
 #sidebar{
 	width:200px;
@@ -89,3 +89,30 @@ a.skip_link{
 	left:-1000px;
 	top:-1000px;
 }
+
+#navigation{
+	width:900px;
+	height:auto;
+	background-color:#98AC5E;
+	text-align:middle;
+	}
+
+	#navigation ul{
+		list-style:none;
+	}
+
+	#navigation ul li{
+		float:left;
+		margin-right:15px;
+	}
+
+	#navigation ul li a{
+		color:White;
+		font-weight:bold;
+		text-decoration:underline;
+	}
+	#navigation ul li a:hover{
+		color:#616161;
+		background-color:White;
+		text-decoration:none;
+	}
