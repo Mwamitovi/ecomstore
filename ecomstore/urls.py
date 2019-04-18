@@ -27,7 +27,8 @@ admin.autodiscover()
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^catalog/$', views.home),
+    # url(r'^catalog/$', views.home),
+    url(r'^', include('catalog.urls', namespace='catalog')),
 ]
 
 # This view is automatically enabled by runserver
