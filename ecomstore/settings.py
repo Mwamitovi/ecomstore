@@ -106,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Kampala'
 
 USE_I18N = True
 
@@ -120,3 +120,16 @@ USE_TZ = True
 # STATIC_URL = '/static/'
 # Set the static path to link to url pattern
 STATIC_URL = "/r'^static/"
+
+# Set the media path
+MEDIA_URL = '/static/'
+
+# default site name
+SITE_NAME = 'Modern Musician'
+
+# default site keywords
+META_KEYWORDS = 'Music, instruments, music accessories, musician supplies'
+
+# default site description
+META_DESCRIPTION = 'Modern Musician is an online supplier of instruments, \
+                    sheet music, and other accessories for musicians'
