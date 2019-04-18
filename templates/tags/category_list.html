@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{# templates/tags/category_list.html #}
 
-</body>
-</html>
+<h3>Categories</h3>
+{% for c in active_categories %}
+    <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+        <br/>
+{% endfor %}
