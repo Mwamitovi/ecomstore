@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{# templates/catalog/category.html #}
+{% extends "catalog.html" %}
 
-</body>
-</html>
+{% block content %}
+    <h1>{{ c.name }}</h1>
+    {{ c.description }}
+    <br /><br />
+    {% for p in products %}
+        <div class="product_thumbnail">
+            <a href="{{ p.get_absolute_url }}">
+                <img src="{{ MEDIA_URL }}images/products/thumbnails/{{ p.image}}"
+                    alt="{{ p.name }}" class="bn" />
+                <br />
+                {{ p.name }}
+            </a>
+        </div>
+    {% endfor %}
+{% endblock %}
