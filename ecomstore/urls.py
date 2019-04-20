@@ -18,8 +18,8 @@ from django.contrib import admin
 from django.views.static import serve
 # from django.conf.urls.static import static
 # from django.conf import settings
-from ecomstore import settings
-from preview import views
+from ecomstore import settings, views
+# from preview import views
 
 
 admin.autodiscover()
@@ -30,6 +30,8 @@ urlpatterns = [
     # url(r'^catalog/$', views.home),
     url(r'^', include('catalog.urls', namespace='catalog')),
 ]
+
+handler404 = views.file_not_found_404
 
 # This view is automatically enabled by runserver
 # (with a DEBUG setting set to True)
