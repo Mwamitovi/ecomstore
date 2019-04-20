@@ -13,7 +13,7 @@ urlpatterns = [
         name='catalog_category'
         ),
     url(r'^product/(?P<product_slug>[-\w]+)/$', views.show_product,
-        {'template_name':'catalog/product.html'},
+        {'template_name': 'catalog/product.html'},
         name='catalog_product'
         ),
 ]
