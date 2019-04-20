@@ -137,3 +137,8 @@ META_KEYWORDS = 'Music, instruments, music accessories, musician supplies'
 # default site description
 META_DESCRIPTION = 'Modern Musician is an online supplier of instruments, \
                     sheet music, and other accessories for musicians'
+
+# session settings
+SESSION_COOKIE_DAYS = 90
+
+SESSION_COOKIE_AGE = 60*60*24*SESSION_COOKIE_DAYS
