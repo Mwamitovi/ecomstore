@@ -40,3 +40,37 @@ def get_cart_items(request):
     """ return all items from the current user's cart """
     return CartItem.objects.filter(cart_id=_cart_id(request))
 
+
+def add_to_cart(request):
+    """ function that takes a POST request and
+    adds a product instance to the current customer's shopping cart
+    """
+    postdata = request.POST.copy()
+    # get product slug from post data, return blank if empty
+    product_slug = postdata.get('product_slug', '')
+    # get quantity added, return 1 if empty
+    quantity = postdata.get('quantity', 1)
+    # fetch the product or return a missing page error
+    p = get_object_or_404(Product, slug=product_slug)
+    # get products in cart
+    cart_products = get_cart_items(request)
+    product_in_cart = False
+    # check to see if item is already in cart
+    for cart_item in cart_products:
+        if cart_item.product.id == p.id:
+            # update the quantity if found
+            cart_item.augment_quantity(quantity)
+            product_in_cart = True
+
+    if not product_in_cart:
+        # create and save a new cart item
+        ci = CartItem()
+        ci.product = p
+        ci.quantity = quantity
+        ci.cart_id = _cart_id(request)
+        ci.save()
+
+
+def cart_distinct_item_count(request):
+    """ returns the total number of items in the user's cart """
+    return get_cart_items(request).count()
