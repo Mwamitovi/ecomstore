@@ -22,6 +22,7 @@ def _cart_id(request):
 
 
 def _generate_cart_id():
+    """ function for generating random cart ID values """
     cart_id = ''
     characters = 'ABCDEFGHIJKLMNOPQRQSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()'
     cart_id_length = 50
