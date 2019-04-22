@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{# cart/cart.html #}
+{% extends "catalog.html" %}
+
+{% block content %}
+    <h1>Cart Page Here</h1>
+    Cart item count: {{ cart_item_count }}
+{% endblock %}
