@@ -8,7 +8,7 @@ urlpatterns = [
         {'template_name': 'catalog/index.html'},
         name='catalog_home'
         ),
-    url(r'^category/(?P<category_slug>[-\w]/$)', views.show_category,
+    url(r'^category/(?P<category_slug>[-\w]+)/$', views.show_category,
         {'template_name': 'catalog/category.html'},
         name='catalog_category'
         ),
