@@ -7,7 +7,7 @@ from utils import context_processors
 
 
 def show_cart(request, template_name):
-    cart_item_count = cart.cart_item_count(request)
+    cart_item_count = cart.cart_distinct_item_count(request)
     page_title = 'Shopping Cart'
     # return render_to_response(
     #     template_name, locals(), RequestContext(request)
