@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from django.utils.encoding import python_2_unicode_compatible
 from django.db import models
+from django.urls import reverse
 
 
 @python_2_unicode_compatible
@@ -34,7 +35,11 @@ class Category(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return 'catalog_category', (), {'category_slug': self.slug}
+        # return 'catalog_category', (), {'category_slug': self.slug}
+        return reverse(
+            'catalog:catalog_category',
+            kwargs={'category_slug': self.slug}
+        )
 
 
 @python_2_unicode_compatible
@@ -75,7 +80,11 @@ class Product(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return 'catalog_product', (), {'product_slug': self.slug}
+        # return 'catalog_product', (), {'product_slug': self.slug}
+        return reverse(
+            'catalog:catalog_product',
+            kwargs={'product_slug': self.slug}
+        )
 
     def sale_price(self):
         if self.old_price > self.price:
