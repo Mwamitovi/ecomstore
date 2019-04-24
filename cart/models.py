@@ -35,10 +35,10 @@ class CartItem(models.Model):
     def get_absolute_url(self):
         return self.product.get_absolute_url()
 
-    def augment_quantity(self):
+    def augment_quantity(self, quantity):
         """
         called when a POST request comes in for a Product instance
         already in the shopping cart
         """
-        self.quantity = self.quantity + int(self.quantity)
+        self.quantity = self.quantity + int(quantity)
         self.save()
