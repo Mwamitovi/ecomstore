@@ -137,3 +137,8 @@ a{
 		float:left;
 		padding:0 10px 10px 0;
 	}
+
+ul.errorlist{
+	background-color:Red;
+	color:White;
+}
