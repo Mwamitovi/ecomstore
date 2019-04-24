@@ -36,7 +36,7 @@ def show_category(request, category_slug, template_name):
         template_name,
         {'products': products, 'page_title': page_title,
          'meta_keywords': meta_keywords, 'meta_description': meta_description,
-        },
+         },
         RequestContext(request, processors=[context_processors])
     )
 
@@ -78,9 +78,6 @@ def show_product(request, product_slug, template_name):
     return render(
         request,
         template_name,
-        {'categories': categories, 'page_title': page_title,
-         'meta_keywords': meta_keywords, 'meta_description': meta_description,
-         'form': form, 'cart': cart,
-        },
+        locals(),
         RequestContext(request, processors=[context_processors])
     )
