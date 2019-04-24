@@ -62,7 +62,7 @@ def show_product(request, product_slug, template_name):
             # if test cookie worked, get rid of it
             if request.session.test_cookie_worked():
                 request.session.delete_test_cookie()
-            url = urlresolvers.reverse('show_cart')
+            url = urlresolvers.reverse('cart:show_cart')
             return HttpResponseRedirect(url)
     else:
         # It's a GET, so create the unbound form,
@@ -72,6 +72,15 @@ def show_product(request, product_slug, template_name):
     form.fields['product_slug'].widget.attrs['value'] = product_slug
     # set the test cookie on our first GET request
     request.session.set_test_cookie()
-    return render_to_response(
-        template_name, locals(), RequestContext(request)
+    # return render_to_response(
+    #     template_name, locals(), RequestContext(request)
+    # )
+    return render(
+        request,
+        template_name,
+        {'categories': categories, 'page_title': page_title,
+         'meta_keywords': meta_keywords, 'meta_description': meta_description,
+         'form': form, 'cart': cart,
+        },
+        RequestContext(request, processors=[context_processors])
     )
