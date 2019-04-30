@@ -74,3 +74,7 @@ def add_to_cart(request):
 def cart_distinct_item_count(request):
     """ returns the total number of items in the user's cart """
     return get_cart_items(request).count()
+
+
+def get_single_item(request, item_id):
+    return get_object_or_404(CartItem, id=item_id, cart_id=_cart_id(request))
