@@ -86,6 +86,7 @@ class Product(models.Model):
             kwargs={'product_slug': self.slug}
         )
 
+    @property
     def sale_price(self):
         if self.old_price > self.price:
             return self.price
