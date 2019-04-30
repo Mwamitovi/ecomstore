@@ -24,11 +24,26 @@ def get_checkout_url(request):
         raise err
     except URLError as err:
         raise err
-        raise err
     else:
         redirect_url = _parse_google_checkout_response(response_xml)
     return redirect_url
 
+
+def _create_google_checkout_request(request):
+    """ constructs a network request containing an XML version of a
+    customer's shopping cart contents to submit to Google Checkout
+    """
+    url = settings.GOOGLE_CHECKOUT_URL
+    cart = _build_xml_shopping_cart(request)
+    req = Request(url=url, data=cart)
+    merchant_id = settings.GOOGLE_CHECKOUT_MERCHANT_ID
+    merchant_key = settings.GOOGLE_CHECKOUT_MERCHANT_KEY
+    key_id = merchant_id + ':' + merchant_key
+    authorization_value = base64.encodebytes(key_id)[:-1]
+    req.add_header('Authorization', 'Basic %s' % authorization_value)
+    req.add_header('Content-type', 'application/xml; charset=UTF-8')
+    req.add_header('Accept', 'application/xml; charset=UTF-8')
+    return req
 
 
 
