@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware'
 ]
 
+SITE_ID = 1
 
 ROOT_URLCONF = 'ecomstore.urls'
 
