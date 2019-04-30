@@ -1,5 +1,6 @@
 # templatetags/catalog_tags.py
 from django import template
+from django.contrib.flatpages.models import FlatPage
 from cart import cart
 from catalog.models import Category
 
@@ -19,3 +20,23 @@ def category_list(request_path):
         'active_categories': active_categories,
         'request_path': request_path
     }
+
+
+@register.inclusion_tag("tags/footer.html")
+def footer_links():
+    flatpage_list = FlatPage.objects.all()
+    return {'flatpage_list': flatpage_list}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
