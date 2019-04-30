@@ -81,7 +81,9 @@ def get_single_item(request, item_id):
 
 
 def update_cart(request):
-    """ Updates quantity for single item """
+    """ function takes a POST request, then updates
+    the quantity for single product instance in the current customer's shopping cart
+    """
     postdata = request.POST.copy()
     item_id = postdata['item_id']
     quantity = postdata['quantity']
@@ -95,13 +97,23 @@ def update_cart(request):
 
 
 def remove_from_cart(request):
-    """ removes a single item from the cart """
+    """ function that takes a POST request,
+    and removes a single product instance from the current customer's shopping cart
+    """
     postdata = request.POST.copy()
     item_id = postdata['item_id']
     cart_item = get_single_item(request, item_id)
     if cart_item:
         cart_item.delete()
 
+
+def cart_subtotal(request):
+    """ gets the subtotal for the current shopping cart """
+    cart_total = decimal.Decimal('0.00')
+    cart_products = get_cart_items(request)
+    for cart_item in cart_products:
+        cart_total += cart_item.product.price * cart_item.quantity
+    return cart_total
 
 
 
