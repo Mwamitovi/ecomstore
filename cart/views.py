@@ -19,7 +19,7 @@ def show_cart(request, template_name):
     cart_items = cart.get_cart_items(request)
     page_title = 'Shopping Cart'
     cart_subtotal = cart.cart_subtotal(request)
-    # cart_item_count = cart.cart_distinct_item_count(request)
+
     return render(
         request,
         template_name,
