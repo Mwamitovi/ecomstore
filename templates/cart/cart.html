@@ -44,6 +44,7 @@
                 <td>{{ item.price|currency }}</td>
                 <td class="right">
                     <form method="POST" action="." class="cart">
+                      {% csrf_token %}
                         <label for="quantity">Quantity:</label>
                         <input type="text" name="quantity" value="{{ item.quantity }}" 
                             id="quantity" size="2" class="quantity" maxlength="5" /> 
@@ -55,6 +56,7 @@
                 </td>
                 <td>
                     <form method="POST" action="." class="cart">
+                      {% csrf_token %}
                         <input type="hidden" name="item_id" value="{{ item.id }}" />
                         <input type="submit" name="submit" value="Remove" />
                     </form>

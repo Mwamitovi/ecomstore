@@ -26,7 +26,8 @@
     {% endif %}
         <br/><br/>
     <!--[add to cart button]-->
-    <form method="POST" action="." class="cart">{% csrf_token %}
+    <form method="POST" action="." class="cart">
+      {% csrf_token %}
         {{ form.as_p }}<br />
         <input type="submit" value="Add To Cart" name="submit" alt="Add To Cart" />
     </form>
