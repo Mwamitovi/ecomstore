@@ -47,5 +47,5 @@ class ProductAddToCartForm(forms.Form):
         """ custom validation to check for presence of cookies in client's browser """
         if self.request:
             if not self.request.session.test_cookie_worked():
-                raise forms.ValidationError("Cookies must enabled.")
+                raise forms.ValidationError("Cookies must be enabled.")
         return self.cleaned_data
