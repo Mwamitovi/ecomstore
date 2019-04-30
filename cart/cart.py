@@ -94,6 +94,17 @@ def update_cart(request):
             remove_from_cart(request)
 
 
+def remove_from_cart(request):
+    """ removes a single item from the cart """
+    postdata = request.POST.copy()
+    item_id = postdata['item_id']
+    cart_item = get_single_item(request, item_id)
+    if cart_item:
+        cart_item.delete()
+
+
+
+
 
 
 
