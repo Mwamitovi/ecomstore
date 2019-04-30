@@ -26,17 +26,3 @@ def category_list(request_path):
 def footer_links():
     flatpage_list = FlatPage.objects.all()
     return {'flatpage_list': flatpage_list}
-
-
-
-
-
-
-
-
-
-
-
-
-
-

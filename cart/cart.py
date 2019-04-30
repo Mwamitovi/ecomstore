@@ -81,7 +81,7 @@ def get_single_item(request, item_id):
 
 
 def update_cart(request):
-    """ function takes a POST request, then updates
+    """ function takes a POST request that updates
     the quantity for single product instance in the current customer's shopping cart
     """
     postdata = request.POST.copy()
