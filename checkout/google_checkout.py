@@ -46,7 +46,18 @@ def _create_google_checkout_request(request):
     return req
 
 
-
+def _parse_google_checkout_response(response_xml):
+    """ get the XML response from an XML POST to Google Checkout
+    of our shopping cart items """
+    redirect_url = ''
+    xml_doc = minidom.parseString(response_xml)
+    root = xml_doc.domentElement
+    node = root.childNodes[1]
+    if node.tagName == 'redirect-url':
+        redirect_url = node.firstChild.data
+    if node.tagName == 'error-message':
+        raise RuntimeError(node.firstChild.data)
+    return redirect_url
 
 
 
