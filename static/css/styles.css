@@ -111,6 +111,7 @@ a.skip_link{
 		font-weight:bold;
 		text-decoration:underline;
 	}
+
 	#navigation ul li a:hover{
 		color:#616161;
 		background-color:White;
@@ -122,9 +123,11 @@ a{
 	font-weight:bold;
 	text-decoration:none;
 	}
+
 	a:hover{
 		text-decoration:underline;
 	}
+
 	/* category page styles */
 	div.product_thumbnail{
 		text-align:center;
@@ -132,6 +135,7 @@ a{
 		width:150px;
 		height:200px;
 	}
+
 	/* product page styles */
 	div.product_image{
 		float:left;
@@ -142,3 +146,39 @@ ul.errorlist{
 	background-color:Red;
 	color:White;
 }
+
+/* styles for shopping cart page */
+table#shopping_cart{
+	width:100%;
+	border-collapse:collapse;
+	color:#616161;
+	}
+
+	h1,caption{
+		text-align:left;
+		font-size:x-large;
+		margin-bottom:15px;
+		color:Black;
+	}
+
+	th, td{
+		text-align:left;
+		padding:3px;
+	}
+	
+	thead th{
+		color:White;
+		background-color:#616161;
+	}
+
+	tfoot th{
+		height:40px;
+	}
+	
+	table#shopping_cart th.right, td.right{
+		text-align:right;
+	}
+
+	a.cart{
+		color:DarkOrange;
+	}
