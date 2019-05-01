@@ -52,7 +52,7 @@ def _parse_google_checkout_response(response_xml):
     of our shopping cart items """
     redirect_url = ''
     xml_doc = minidom.parseString(response_xml)
-    root = xml_doc.domentElement
+    root = xml_doc.documentElement
     node = root.childNodes[1]
     if node.tagName == 'redirect-url':
         redirect_url = node.firstChild.data
