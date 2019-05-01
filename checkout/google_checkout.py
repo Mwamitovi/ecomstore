@@ -34,7 +34,8 @@ def _create_google_checkout_request(request):
     """ constructs a network request containing an XML version of a
     customer's shopping cart contents to submit to Google Checkout
     """
-    url = settings.GOOGLE_CHECKOUT_URL
+    # For Production, use GOOGLE_REAL_CHECKOUT_URL
+    url = settings.GOOGLE_TEST_CHECKOUT_URL
     _cart = _build_xml_shopping_cart(request)
     req = Request(url=url, data=_cart)
     merchant_id = settings.GOOGLE_CHECKOUT_MERCHANT_ID
