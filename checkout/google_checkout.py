@@ -40,7 +40,7 @@ def _create_google_checkout_request(request):
     merchant_id = settings.GOOGLE_CHECKOUT_MERCHANT_ID
     merchant_key = settings.GOOGLE_CHECKOUT_MERCHANT_KEY
     key_id = merchant_id + ':' + merchant_key
-    authorization_value = base64.encodebytes(key_id)[:-1]
+    authorization_value = base64.encodebytes(key_id.encode('utf-8'))[:-1]
     req.add_header('Authorization', 'Basic %s' % authorization_value)
     req.add_header('Content-type', 'application/xml; charset=UTF-8')
     req.add_header('Accept', 'application/xml; charset=UTF-8')
