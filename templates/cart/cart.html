@@ -2,6 +2,10 @@
 {% extends "catalog.html" %}
 {% load catalog_filters %}
 
+{% block js %}
+<script async src="https://pay.google.com/gp/p/js/pay.js" onLoad="onGooglePayLoaded()"></script>
+{% endblock js %}
+
 {% block content %}
 <table id="shopping_cart" summary="Your Shopping Cart">
     <caption>Your Shopping Cart</caption>
