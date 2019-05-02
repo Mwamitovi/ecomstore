@@ -1,5 +1,11 @@
+/**
+ * Developed by the Google team
+ * Except as otherwise noted, the code samples are licensed under the Apache 2.0 License. 
+ * For details, see https://developers.google.com
+ */
 
-// Complete end-to-end example using the Google Pay API JavaScript Library
+// The Complete end-to-end example using the Google Pay API JavaScript Library
+// Adapted from https:developers.google.com/pay/api/wed/guides/tutorial
 // if within markup, place this under one script
 
 /**
