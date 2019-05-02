@@ -57,45 +57,32 @@ class Order(models.Model):
     @property
     def total(self):
         total = decimal.Decimal('0.00')
-        order_items = OrderItems.objects.filter(order=self)
+        order_items = OrderItem.objects.filter(order=self)
         for item in order_items:
             total += item.total
         return total
 
 
+class OrderItem(models.Model):
+    product = models.ForeignKey(Product)
+    quantity = models.IntegerField(default=1)
+    price = models.DecimalField(max_digits=9, decimal_places=0)
+    order = models.ForeignKey(Order)
 
+    @property
+    def total(self):
+        return self.quantity * self.price
 
+    @property
+    def name(self):
+        return self.product.name
 
+    @property
+    def sku(self):
+        return self.product.sku
 
+    def __str__(self):
+        return self.product.name + ' (' + self.product.sku + ')'
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    def get_absolute_url(self):
+        return self.product.get_absolute_url()
