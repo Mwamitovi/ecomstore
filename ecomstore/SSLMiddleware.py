@@ -8,12 +8,13 @@
 from django.conf import settings
 from django.http import \
     HttpResponsePermanentRedirect, HttpRequest
+from django.utils.deprecation import MiddlewareMixin
 
 
 SSL = 'SSL'
 
 
-class SSLRedirect:
+class SSLRedirect(MiddlewareMixin):
     """ middleware class for handling redirects back and forth between secure
     and non-secure pages. Taken from: http://www.djangosnippets.org/snippets/880/
     """
