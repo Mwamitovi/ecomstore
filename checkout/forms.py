@@ -95,43 +95,16 @@ class CheckoutForm(forms.ModelForm):
     credit_card_expire_year = forms.CharField(widget=forms.Select(choices=cc_expire_years()))
     credit_card_cvv = forms.CharField()
 
+    def clean_credit_card_number(self):
+        """ validate credit card number if valid per Luhn algorithm """
+        cc_number = self.cleaned_data['credit_card_number']
+        stripped_cc_number = strip_non_numbers(cc_number)
+        if not cardLuhnChecksumIsValid(stripped_cc_number):
+            raise forms.ValidationError('The Credit Card you entered is invalid.')
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    def clean_phone(self):
+        phone = self.cleaned_data['phone']
+        stripped_phone = strip_non_numbers(phone)
+        if len(stripped_phone) < 10:
+            raise forms.ValidationError('Enter a valid phone number with area code.(e.g. 123-456-7890)')
+        return self.cleaned_data['phone']
