@@ -62,6 +62,63 @@ def cardLuhnChecksumIsValid(card_number):
     )
 
 
+class CheckoutForm(forms.ModelForm):
+    """ checkout form class to collect user billing and
+    shipping information for placing an order
+    """
+    def __int__(self, *args, **kwargs):
+        super(CheckoutForm, self).__init__(*args, **kwargs)
+        # override default attributes
+        for field in self.fields:
+            self.fields[field].widget.attrs['size'] = '30'
+
+        self.fields['shipping_state'].widget.attrs['size'] = '3'
+        self.fields['shipping_state'].widget.attrs['size'] = '3'
+        self.fields['shipping_zip'].widget.attrs['size'] = '6'
+
+        self.fields['billing_state'].widget.attrs['size'] = '3'
+        self.fields['billing_state'].widget.attrs['size'] = '3'
+        self.fields['billing_zip'].widget.attrs['size'] = '6'
+
+        self.fields['credit_card_type'].widget.attrs['size'] = '1'
+        self.fields['credit_card_expire_year'].widget.attrs['size'] = '1'
+        self.fields['credit_card_expire_month'].widget.attrs['size'] = '1'
+        self.fields['credit_card_cvv'].widget.attrs['size'] = '5'
+
+    class Meta:
+        model = Order
+        exclude = ('status', 'ip_address', 'user', 'transaction_id',)
+
+    credit_card_number = forms.CharField()
+    credit_card_type = forms.CharField(widget=forms.Select(choices=CARD_TYPES))
+    credit_card_expire_month = forms.CharField(widget=forms.Select(choices=cc_expire_months()))
+    credit_card_expire_year = forms.CharField(widget=forms.Select(choices=cc_expire_years()))
+    credit_card_cvv = forms.CharField()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
