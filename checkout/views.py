@@ -42,24 +42,23 @@ def show_checkout(request, template_name):
     )
 
 
+# noinspection PyUnresolvedReferences
+def receipt(request, template_name):
+    """ page displayed with order information
+    after an order has been placed successfully
+    """
+    order_number = request.session.get('order_number', '')
+    if order_number:
+        order = Order.objects.filter(id=order_number)[0]
+        order_items = OrderItem.objects.filter(order=order)
+        del request.session['order_number']
+    else:
+        cart_url = reverse('show_cart')
+        return HttpResponseRedirect(cart_url)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    return render(
+        request,
+        template_name,
+        locals(),
+        RequestContext(request, processors=[context_processors])
+    )
