@@ -36,27 +36,30 @@ CARD_TYPES = (
 )
 
 
+def strip_non_numbers(data):
+    """ gets rid of all non-number characters """
+    non_numbers = re.compile(r"\D")
+    return non_numbers.sub('', data)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Gateway test credit cards won't pass this validation
+def cardLuhnChecksumIsValid(card_number):
+    """ checks to make sure that the card passes a Luhn mod-10 checksum
+    Taken from: http://code.activestate.com/recipes/172845/
+    """
+    _sum = 0
+    num_digits = len(card_number)
+    oddeven = num_digits & 1
+    for count in range(0, num_digits):
+        digit = int(card_number[count])
+        if not ((count & 1) ^ oddeven):
+            digit = digit * 2
+        if digit > 9:
+            digit = digit - 9
+        _sum = _sum + digit
+    return (
+        (_sum % 10) == 0
+    )
 
 
 
