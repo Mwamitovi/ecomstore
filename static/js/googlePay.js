@@ -101,7 +101,7 @@ function getGoogleIsReadyToPayRequest() {
 function getGooglePaymentDataRequest() {
     const PaymentDataRequest = Object.assign({}, baseRequest);
     PaymentDataRequest.allowedPaymentMethods = [cardPaymentMethod];
-    PaymentDataRequest.transactionInfo = getGoogleTransactionId();
+    PaymentDataRequest.transactionInfo = getGoogleTransactionInfo();
     PaymentDataRequest.merchantInfo = {
         /**
          * @todo a merchant ID is vailbale for a production environment after approval by Google
@@ -137,8 +137,8 @@ function onGooglePayLoaded() {
                 addGooglePayButton();
                 /**
                  * @todo prefetch payment data to improve performance after confirming site functionality
-                 * prefetchGooglePaymentData();
                  */
+                prefetchGooglePaymentData();
             }
         })
         .catch(function(err) {
@@ -155,7 +155,7 @@ function onGooglePayLoaded() {
 function addGooglePayButton() {
     const paymentsClient = getGooglePaymentsClient();
     const button = paymentsClient.createButton(
-        {onClick: onGooglePaymentButtonClicked}
+        {onClick: onGooglePaymentButtonClicked, buttonColor: 'black', buttonType: 'short'}
     );
     // Remember to customize this id="container" to match where you place this button
     document.getElementById('container').appendChild(button);
@@ -166,7 +166,7 @@ function addGooglePayButton() {
  * @see {@link https://developers.google.com/pay/api/web/reference/object#TransactionInfo|TransactionInfo}
  * @returns {object} transaction info, suitable for use as transactionInfo property of PaymentDataRequest
  */
-function getGoogleTransactionId() {
+function getGoogleTransactionInfo() {
     return {
         currencyCode: 'USD',
         totalPriceStatus: 'FINAL',
@@ -187,7 +187,7 @@ function prefetchGooglePaymentData() {
         currencyCode: 'USD'
     };
     const paymentsClient = getGooglePaymentsClient();
-    paymentsClient.prefetchGooglePaymentData(PaymentDataRequest);
+    paymentsClient.prefetchPaymentData(PaymentDataRequest);
 }
 
 /**
