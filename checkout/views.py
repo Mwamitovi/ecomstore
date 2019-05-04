@@ -26,7 +26,7 @@ def show_checkout(request, template_name):
             error_message = response.get('message', '')
             if order_number:
                 request.session['order_number'] = order_number
-                receipt_url = reverse('checkout_receipt')
+                receipt_url = reverse('checkout:checkout_receipt')
                 return HttpResponseRedirect(receipt_url)
         else:
             error_message = 'Please correct the errors below'
@@ -53,7 +53,7 @@ def receipt(request, template_name):
         order_items = OrderItem.objects.filter(order=order)
         del request.session['order_number']
     else:
-        cart_url = reverse('show_cart')
+        cart_url = reverse('cart:show_cart')
         return HttpResponseRedirect(cart_url)
 
     return render(
