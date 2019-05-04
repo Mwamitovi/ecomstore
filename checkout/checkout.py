@@ -11,7 +11,7 @@ def get_checkout_url(request):
     """ returns the URL from the checkout module for cart """
 
     # use this for our own-site checkout
-    return reverse('checkout')
+    return reverse('checkout:checkout')
 
 
 def process(request):
