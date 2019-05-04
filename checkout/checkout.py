@@ -42,7 +42,7 @@ def process(request):
         amount=amount,
         card_num=card_num,
         exp_date=exp_date,
-        card_cvv=cvv
+        card_cvv=cvv,
     )
 
     if response[0] == _APPROVED:

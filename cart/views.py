@@ -1,12 +1,10 @@
 # cart/views.py
 from django.shortcuts import render
-# from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from cart import cart
 from utils import context_processors
 from checkout import checkout
-from ecomstore import settings
 
 
 def show_cart(request, template_name):
@@ -25,8 +23,6 @@ def show_cart(request, template_name):
     cart_items = cart.get_cart_items(request)
     page_title = 'Shopping Cart'
     cart_subtotal = cart.cart_subtotal(request)
-    # for Google Checkout button
-    merchant_id = settings.GOOGLE_CHECKOUT_MERCHANT_ID
 
     return render(
         request,
