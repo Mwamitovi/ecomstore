@@ -151,3 +151,6 @@ META_DESCRIPTION = 'Modern Musician is an online supplier of instruments, \
 SESSION_COOKIE_DAYS = 90
 
 SESSION_COOKIE_AGE = 60*60*24*SESSION_COOKIE_DAYS
+
+# Redirects to a custom page, after login
+LOGIN_REDIRECT_URL = '/accounts/my_account/'
