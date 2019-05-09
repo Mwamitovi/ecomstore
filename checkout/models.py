@@ -1,5 +1,6 @@
 # checkout/models.py
 from django.db import models
+from django.urls import reverse
 from django import forms
 from django.contrib.auth.models import User
 from catalog.models import Product
@@ -61,6 +62,12 @@ class Order(models.Model):
         for item in order_items:
             total += item.total
         return total
+
+    def get_absolute_url(self):
+        return reverse(
+            'accounts:order_details',
+            kwargs={'order_id': self.pk}
+        )
 
 
 class OrderItem(models.Model):
