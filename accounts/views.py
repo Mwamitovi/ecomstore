@@ -1,13 +1,16 @@
 # accounts/views.py
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.core import urlresolvers
 from django.http import HttpResponseRedirect
 from utils import context_processors
+from checkout.models import Order, OrderItem
 
 
 def register(request, template_name):
+    """ view displaying customer registration form """
     if request.method == 'POST':
         postdata = request.POST.copy()
         form = UserCreationForm(postdata)
@@ -32,6 +35,18 @@ def register(request, template_name):
             RequestContext(request, processors=[context_processors])
         )
 
+
+@login_required()
+def my_account(request, template_name):
+    page_title = 'My Account'
+    orders = Order.objects.filter(user=request.user)
+    name = request.user.user.username
+    return render(
+        request,
+        template_name,
+        locals(),
+        RequestContext(request, processors=[context_processors])
+    )
 
 
 
