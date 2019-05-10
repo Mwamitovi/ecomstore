@@ -5,7 +5,12 @@ from checkout.models import BaseOrderInfo
 
 
 class UserProfile(BaseOrderInfo):
-    user = models.ForeignKey(User, unique=True)
+    """ stores customer order information used with the last order placed;
+        can be attached to the checkout order form as a convenience
+        to registered customers who have placed an order in the past.
+    """
+    # user = models.ForeignKey(User, unique=True)
+    user_profile = models.OneToOneField(User, related_name='profile')
 
     def __str__(self):
-        return 'User Profile for: ' + self.user.username
+        return 'User Profile for: ' + self.user_profile.username
