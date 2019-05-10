@@ -7,28 +7,10 @@ from catalog.models import Product
 import decimal
 
 
-class Order(models.Model):
-    # each individual status
-    SUBMITTED = 1
-    PROCESSED = 2
-    SHIPPED = 3
-    CANCELLED = 4
-
-    # set of possible order statuses
-    ORDER_STATUSES = (
-        (SUBMITTED, 'Submitted'),
-        (PROCESSED, 'Processed'),
-        (SHIPPED, 'Shipped'),
-        (CANCELLED, 'Cancelled'),
-    )
-
-    # order info
-    date = models.DateTimeField(auto_now_add=True)
-    status = models.IntegerField(choices=ORDER_STATUSES, default=SUBMITTED)
-    ip_address = models.GenericIPAddressField()
-    last_updated = models.DateTimeField(auto_now=True)
-    user = models.ForeignKey(User, null=True)
-    transaction_id = models.CharField(max_length=20)
+class BaseOrderInfo(models.Model):
+    """ base class for storing customer order information """
+    class Meta:
+        abstract = True
 
     # contact info
     email = models.EmailField(max_length=50)
@@ -51,6 +33,30 @@ class Order(models.Model):
     billing_state = models.CharField(max_length=2)
     billing_country = models.CharField(max_length=50)
     billing_zip = models.CharField(max_length=10)
+
+
+class Order(BaseOrderInfo):
+    # each individual status
+    SUBMITTED = 1
+    PROCESSED = 2
+    SHIPPED = 3
+    CANCELLED = 4
+
+    # set of possible order statuses
+    ORDER_STATUSES = (
+        (SUBMITTED, 'Submitted'),
+        (PROCESSED, 'Processed'),
+        (SHIPPED, 'Shipped'),
+        (CANCELLED, 'Cancelled'),
+    )
+
+    # order info
+    date = models.DateTimeField(auto_now_add=True)
+    status = models.IntegerField(choices=ORDER_STATUSES, default=SUBMITTED)
+    ip_address = models.GenericIPAddressField()
+    last_updated = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User, null=True)
+    transaction_id = models.CharField(max_length=20)
 
     def __str__(self):
         return 'Order #' + str(self.pk)
