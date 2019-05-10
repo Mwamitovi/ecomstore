@@ -7,6 +7,8 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from utils import context_processors
 from checkout.models import Order, OrderItem
+from accounts.forms import UserProfileForm
+from accounts import profile
 
 
 def register(request, template_name):
@@ -62,6 +64,25 @@ def order_details(request, order_id, template_name):
     )
 
 
+@login_required()
+def order_info(request, template_name):
+    if request.method == 'POST':
+        postdata = request.POST.copy()
+        form = UserProfileForm(postdata)
+        if form.is_valid():
+            profile.set(request)
+            url = reverse('accounts:my_account')
+            return HttpResponseRedirect(url)
+    else:
+        user_p = profile.retrieve(request)
+        form = UserProfileForm(instance=user_p)
+    page_title = 'Edit Order Information'
+    return render(
+        request,
+        template_name,
+        locals(),
+        RequestContext(request, processors=[context_processors])
+    )
 
 
 
