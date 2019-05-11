@@ -11,14 +11,14 @@ def retrieve(request):
     """
     try:
         # profile = request.user.get_profile()
-        profile = request.user_profile
+        profile = request.user.myprofile.user_profile
     except UserProfile.DoesNotExist:
         profile = UserProfile(user_profile=request.user)
         profile.save()
     return profile
 
 
-def set(request):
+def set_(request):
     """ updates the information stored in the user's profile """
     profile = retrieve(request)
     profile_form = UserProfileForm(request.POST, instance=profile)
