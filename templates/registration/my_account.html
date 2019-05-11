@@ -20,12 +20,12 @@
         <legend>Account Settings</legend>
         <ul>
             <li>
-                <a href="{% url django.contrib.auth.views.password_change %}">
+                <a href="{% url 'system.password_change' %}">
                     Change Password
                 </a>
             </li>
             <li>
-                <a href="{% url accounts:order_info %}">
+                <a href="{% url 'accounts:order_info' %}">
                     Edit Billing/Shipping Information
                 </a>
             </li>
