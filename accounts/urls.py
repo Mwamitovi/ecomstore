@@ -18,10 +18,6 @@ urlpatterns =[
         {'template_name': 'registration/order_details.html'},
         name='order_details'
         ),
-    url(r'^order_info//$', accounts.views.order_info,
-        {'template_name': 'registration/order_info.html'},
-        name='order_info'
-        ),
 ]
 
 urlpatterns += [
