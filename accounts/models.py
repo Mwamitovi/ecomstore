@@ -10,7 +10,9 @@ class UserProfile(BaseOrderInfo):
         to registered customers who have placed an order in the past.
     """
     # user = models.ForeignKey(User, unique=True)
-    user_profile = models.OneToOneField(User, related_name='profile')
+    user_profile = models.OneToOneField(
+        User, related_name='myprofile', on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return 'User Profile for: ' + self.user_profile.username
