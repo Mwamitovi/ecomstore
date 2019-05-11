@@ -70,7 +70,7 @@ def order_info(request, template_name):
         postdata = request.POST.copy()
         form = UserProfileForm(postdata)
         if form.is_valid():
-            profile.set(request)
+            profile.set_(request)
             url = reverse('accounts:my_account')
             return HttpResponseRedirect(url)
     else:
