@@ -27,15 +27,15 @@ def register(request, template_name):
                 login(request, new_user)
                 url = reverse('accounts:my_account')
                 return HttpResponseRedirect(url)
-        else:
-            form = UserCreationForm()
-        page_title = 'User Registration'
-        return render(
-            request,
-            template_name,
-            locals(),
-            RequestContext(request, processors=[context_processors])
-        )
+    else:
+        form = UserCreationForm()
+    page_title = 'User Registration'
+    return render(
+        request,
+        template_name,
+        locals(),
+        RequestContext(request, processors=[context_processors])
+    )
 
 
 @login_required()
