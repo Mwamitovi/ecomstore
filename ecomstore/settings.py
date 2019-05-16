@@ -135,7 +135,13 @@ USE_TZ = True
 # Set the static path to link to url pattern
 STATIC_URL = "/r'^static/"
 
-# Set the media path
+# Absolute path to the directory that holds media.
+# Example: "/home/media/media.lawrence.com/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
+
+# The URL that handles the media served from MEDIA_ROOT.
+# Use a trailing slash if there is a path component (optional in other cases).
+# Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = '/static/'
 
 # default site name
