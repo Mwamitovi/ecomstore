@@ -4,7 +4,9 @@ from catalog.models import Product
 
 
 class ProductAdminForm(forms.ModelForm):
-    """ ModelForm class to validate product instance data before saving from admin interface """
+    """ ModelForm class to validate product instance data
+        before saving from admin interface
+    """
     class Meta:
         model = Product
         fields = [
@@ -19,6 +21,9 @@ class ProductAdminForm(forms.ModelForm):
             'description',
             'meta_keywords',
             'meta_description',
+            'image',
+            'thumbnail',
+            'image_caption',
             'categories'
         ]
 
