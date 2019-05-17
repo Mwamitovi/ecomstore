@@ -3,28 +3,30 @@
 
 {% block content %}
     <div class="product_image" >
-        <img src="{{ MEDIA_URL }}images/products/main/{{ p.image }}"
-             alt="{{ p.name}}" />
+        <img src="{{ p.image.url }}" alt="{{ p.name}}" />
+        {{ p.image_caption }}
     </div>
     <h1>{{ p.name }}</h1>
-    Brand: <em>{{ p.brand }}</em>
+    <p>
+        Brand: <em>{{ p.brand }}</em>
         <br/><br/>
-    SKU: {{ p.sku }}
-        <br/>
-    In categor{{ categories.count|pluralize:"y, ies" }}:
-        {% for c in categories %}
-            <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
-            {% if not forloop.last %}, {% endif %}
-        {% endfor %}
-        <br/><br/>
-    {% if p.sale_price %}
-        Was: <del>$ {{ p.old_price }}</del>
-        <br/>
-        Now: $ {{ p.price }}
-    {% else %}
-        Price: $ {{ p.price }}
-    {% endif %}
-        <br/><br/>
+        SKU: {{ p.sku }}
+            <br/>
+        In categor{{ categories.count|pluralize:"y, ies" }}:
+            {% for c in categories %}
+                <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+            <br/><br/>
+            {% if p.sale_price %}
+                Was: <del>$ {{ p.old_price }}</del>
+                <br/>
+                Now: $ {{ p.price }}
+            {% else %}
+                Price: $ {{ p.price }}
+            {% endif %}
+                <br/><br/>
+        </p>
     <!--[add to cart button]-->
     <form method="POST" action="." class="cart">
       {% csrf_token %}
@@ -35,5 +37,5 @@
         <br/><br/>
     <div class="cb"><br/><br/></div>
     <h3>Product Description</h3>
-        {{ p.description }}
+    <p>{{ p.description }}</p>
 {% endblock %}
