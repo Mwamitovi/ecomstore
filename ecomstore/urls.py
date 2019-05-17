@@ -13,13 +13,35 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
+from django.views.static import serve
+# from django.conf.urls.static import static
+# from django.conf import settings
+from ecomstore import settings, views
+# from preview import views
 
-from preview import views
+
+admin.autodiscover()
 
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^catalog/$', views.home),
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^accounts/', include('django.contrib.auth.urls', namespace='system')),
+    url(r'^accounts/', include('accounts.urls', namespace='accounts')),
+    url(r'^', include('catalog.urls', namespace='catalog')),
+    url(r'^cart/', include('cart.urls', namespace='cart')),
+    url(r'^checkout/', include('checkout.urls', namespace='checkout'))
 ]
+
+handler404 = views.file_not_found_404
+
+# This view is automatically enabled by runserver
+# (with a DEBUG setting set to True)
+if settings.DEBUG:
+    urlpatterns += [
+        # static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+        url(r'^static/(?P<path>.*)$', serve, {
+            'document_root': 'C:/virtualenvs/myproject_env/project/ecomstore/static'
+            }),
+    ]

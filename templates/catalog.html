@@ -1,4 +1,6 @@
+{# templates/catalog.html #}
 {% extends "base.html" %}
+{% load catalog_tags %}
 
 {% block site_wrapper %}
 <div id="main">
@@ -6,14 +8,16 @@
     <div id="banner">
         <div class="bannerIEPadder">
             <div class="cart_box">
-                [link to cart here]
+                <!-- [link to cart here] -->
+                {% cart_box request %}
             </div>
             Modern Musician
         </div>
     </div>
     <div id="navigation">
         <div class="navIEPadder">
-            [navigation here]
+            <!-- [navigation here] -->
+            {% include "tags/navigation.html" %}
         </div>
     </div>
     <div id="middle">
@@ -21,7 +25,9 @@
             <div class="sidebarIEPadder">
                 [search box here]
                 <br />
-                [category listing here]
+                <!--[category listing here]-->
+                <!-- {# % include "tags/category_list.html" % #} -->
+                {% category_list request.path %}
             </div>
         </div>
         <div id="content">
@@ -33,7 +39,8 @@
     </div>
     <div id="footer">
         <div class="footerIEPadder">
-            [footer here]
+            <!-- [footer here] -->
+            {% footer_links %}
         </div>
     </div>
 </div>

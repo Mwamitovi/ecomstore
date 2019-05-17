@@ -31,6 +31,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Added
+    'django.contrib.sites',
+    'django.contrib.flatpages',
+    'catalog',
+    'utils',
+    'cart',
+    'checkout',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -41,7 +49,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Added
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    'ecomstore.SSLMiddleware.SSLRedirect',
 ]
+
+SITE_ID = 1
 
 ROOT_URLCONF = 'ecomstore.urls'
 
@@ -50,7 +63,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             # We are telling django.template.loaders.filesystem.Loader:
-            # to look into C:\virtualenvs\myproject_env\project\ecomstore\templates\(index.html)
+            # to look into C:\virtualenvs\...\ecomstore\templates\(index.html)
             # The last part in brackets is generated from views.py - template_name
             os.path.join(BASE_DIR, "templates")
         ],
@@ -61,6 +74,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
+                'utils.context_processors.ecomstore',
             ],
         },
     },
@@ -105,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Kampala'
 
 USE_I18N = True
 
@@ -116,4 +131,33 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
+# Set the static path to link to url pattern
+STATIC_URL = "/r'^static/"
+
+# Absolute path to the directory that holds media.
+# Example: "/home/media/media.lawrence.com/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
+
+# The URL that handles the media served from MEDIA_ROOT.
+# Use a trailing slash if there is a path component (optional in other cases).
+# Examples: "http://media.lawrence.com", "http://example.com/media/"
+MEDIA_URL = '/static/'
+
+# default site name
+SITE_NAME = 'Modern Musician'
+
+# default site keywords
+META_KEYWORDS = 'Music, instruments, music accessories, musician supplies'
+
+# default site description
+META_DESCRIPTION = 'Modern Musician is an online supplier of instruments, \
+                    sheet music, and other accessories for musicians'
+
+# session settings
+SESSION_COOKIE_DAYS = 90
+
+SESSION_COOKIE_AGE = 60*60*24*SESSION_COOKIE_DAYS
+
+# Redirects to a custom page, after login
+LOGIN_REDIRECT_URL = '/accounts/my_account/'

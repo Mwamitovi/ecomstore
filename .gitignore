@@ -1,7 +1,7 @@
 # ecomstore/.gitignore
 
 # project files
-/migrations
+migrations
 base_settings.py
 db.sqlite3
 manage.py
