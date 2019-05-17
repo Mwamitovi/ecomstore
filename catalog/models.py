@@ -55,7 +55,6 @@ class Product(models.Model):
     old_price = models.DecimalField(
         max_digits=9, decimal_places=2, blank=True, default=0.00
     )
-    image = models.CharField(max_length=50)
     is_active = models.BooleanField(default=True)
     is_bestseller = models.BooleanField(default=False)
     is_featured = models.BooleanField(default=False)
@@ -70,6 +69,11 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     categories = models.ManyToManyField(Category)
+
+    # image fields added later, require varchar(100) as set in the db
+    image = models.ImageField(upload_to='images/products/main')
+    thumbnail = models.ImageField(upload_to='images/products/thumbnails')
+    image_caption = models.CharField(max_length=200)
 
     class Meta:
         db_table = 'products'
