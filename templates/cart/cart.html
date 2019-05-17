@@ -33,15 +33,10 @@
             <tr>
                 <th class="right" colspan="6">
                     <!-- <a href="/url/to/checkout/">Checkout Now</a> -->
-                    <!-- <form method="POST" action=".">
-                      {#% csrf_token %#}
-                        <input type="hidden" name="submit" value="Checkout" />
-                        <input type="image" name="Google Checkout" alt="Fast checkout through Google"
-                        src="http://sandbox.google.com/checkout/buttons/checkout.gif?merchant_id={#{ merchant_id }#}
-                        &w=180&h=46&style=white&variant=text&loc=en_US" height="46" width="180" />
-                    </form> -->
-                    <!-- We just give this id="container", to be called by addGooglePayButton() -->
-                    <div id="container"></div>
+                    <form method="POST" action=".">
+                      {% csrf_token %}
+                        <input type="submit" name="submit" value="Checkout" alt="Fast Payment with Authorize.Net"/>
+                    </form>
                 </th>
             </tr>
         {% endif %}

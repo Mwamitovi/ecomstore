@@ -210,3 +210,59 @@ h3{
 		font-weight:normal;
 		margin-right:10px;
 	}
+
+fieldset.checkout{
+	padding-bottom:15px;
+	margin-bottom:15px;
+	}
+
+	fieldset.checkout legend{
+		font-weight:bold;
+		color:Black;
+		margin-left:15px;
+	}
+
+	fieldset.checkout table{
+		border-collapse:collapse;
+		width:100%;
+	}
+
+	fieldset.checkout table th{
+		text-align:right;
+		width:200px;
+		font-weight:normal;
+	}
+
+	fieldset.checkout input {
+		font-family:Courier;
+		font-size:Large;
+	}
+
+	table#receipt {
+		width:100%;
+		border-collapse:collapse;
+	}
+
+table#register{
+	width: 100%;
+	}
+		
+	table#register th, td{
+		vertical-align: top;
+	}
+		
+	fieldset.my_account{
+		padding: 10px;
+	}
+		
+	fieldset.my_account legend{
+		font-weight: bold;
+	}
+		
+	fieldset.my_account ul{
+		list-style: none;
+	}
+		
+	fieldset.my_account ul li{
+		margin-bottom: 5px;		
+	}

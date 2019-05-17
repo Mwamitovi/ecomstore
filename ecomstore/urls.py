@@ -27,9 +27,11 @@ admin.autodiscover()
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    # url(r'^catalog/$', views.home),
+    url(r'^accounts/', include('django.contrib.auth.urls', namespace='system')),
+    url(r'^accounts/', include('accounts.urls', namespace='accounts')),
     url(r'^', include('catalog.urls', namespace='catalog')),
-    url(r'^cart/', include('cart.urls', namespace='cart'))
+    url(r'^cart/', include('cart.urls', namespace='cart')),
+    url(r'^checkout/', include('checkout.urls', namespace='checkout'))
 ]
 
 handler404 = views.file_not_found_404
