@@ -5,6 +5,7 @@
     <h1>{{ c.name }}</h1>
     {{ c.description }}
     <br /><br />
-    {% for p in products %}       
+    {% for p in products %}
+        {% include 'tags/product_thumbnail.html' %}     
     {% endfor %}
 {% endblock %}
