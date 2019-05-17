@@ -3,6 +3,7 @@
 {% load catalog_filters %}
 
 {% block js %}
+<script src="/static/js/googlePay.js"></script>
 <script async src="https://pay.google.com/gp/p/js/pay.js" onLoad="onGooglePayLoaded()"></script>
 {% endblock js %}
 
@@ -34,7 +35,6 @@
                     <!-- <a href="/url/to/checkout/">Checkout Now</a> -->
                     <form method="POST" action=".">
                       {% csrf_token %}
-                        <!-- <input type="hidden" name="submit" value="Checkout" /> -->
                         <input type="submit" name="submit" value="Checkout" alt="Fast Payment with Authorize.Net"/>
                     </form>
                 </th>
