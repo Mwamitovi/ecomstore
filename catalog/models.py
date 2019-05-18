@@ -42,8 +42,21 @@ class Category(models.Model):
         )
 
 
+class ActiveProductManager(models.Manager):
+    """ Manager class
+        to return only those products where each instance is active
+    """
+    def get_query_set(self):
+        return super(ActiveProductManager, self)\
+            .get_query_set().filter(is_active=True)
+
+
 @python_2_unicode_compatible
 class Product(models.Model):
+    """ Model class containing information about a product;
+        instances of this class are what the user adds to their
+        shopping cart and can subsequently purchase
+    """
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(
         max_length=255, unique=True,
@@ -74,6 +87,10 @@ class Product(models.Model):
     image = models.ImageField(upload_to='images/products/main')
     thumbnail = models.ImageField(upload_to='images/products/thumbnails')
     image_caption = models.CharField(max_length=200)
+
+    # overriding default Manager class
+    objects = models.Manager()
+    active = ActiveProductManager()
 
     class Meta:
         db_table = 'products'
