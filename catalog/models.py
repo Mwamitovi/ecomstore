@@ -5,8 +5,20 @@ from django.db import models
 from django.urls import reverse
 
 
+class ActiveCategoryManager(models.Manager):
+    """ Manager class
+        to return only those categories where each instance is active
+    """
+    def get_queryset(self):
+        return super(ActiveCategoryManager, self)\
+            .get_queryset().filter(is_active=True)
+
+
 @python_2_unicode_compatible
 class Category(models.Model):
+    """ Model class containing information about
+        a category in the product catalog
+    """
     name = models.CharField(max_length=50)
     slug = models.SlugField(
         max_length=50, unique=True,
@@ -24,6 +36,11 @@ class Category(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    # default Category Manager
+    objects = models.Manager()
+    # Active Category Manager
+    active = ActiveCategoryManager()
 
     class Meta:
         db_table = 'categories'
@@ -46,9 +63,9 @@ class ActiveProductManager(models.Manager):
     """ Manager class
         to return only those products where each instance is active
     """
-    def get_query_set(self):
+    def get_queryset(self):
         return super(ActiveProductManager, self)\
-            .get_query_set().filter(is_active=True)
+            .get_queryset().filter(is_active=True)
 
 
 @python_2_unicode_compatible
@@ -88,8 +105,9 @@ class Product(models.Model):
     thumbnail = models.ImageField(upload_to='images/products/thumbnails')
     image_caption = models.CharField(max_length=200)
 
-    # overriding default Manager class
+    # default Product Manager
     objects = models.Manager()
+    # Active Product Manager
     active = ActiveProductManager()
 
     class Meta:
