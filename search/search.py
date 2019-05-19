@@ -41,38 +41,10 @@ def products(search_text):
     return results
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def _prepare_words(search_text):
+    """ strip out common words, limit to 5 words """
+    _words = search_text.split()
+    for common in STRIP_WORDS:
+        if common in _words:
+            _words.remove(common)
+    return _words[0:5]
