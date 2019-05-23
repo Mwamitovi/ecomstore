@@ -7,6 +7,7 @@ class SearchForm(forms.ModelForm):
     """ form class for accepting search terms """
     class Meta:
         model = SearchTerm
+        fields = ['q']
 
     def __init__(self, *args, **kwargs):
         super(SearchForm, self).__init__(*args, **kwargs)
