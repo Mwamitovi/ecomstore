@@ -1,6 +1,6 @@
 {# templates/tags/search_box.html #}
 
-<form id="search" method="GET" action="{% url search_results %}">
+<form id="search" method="GET" action="{% url 'search:search_results' %}">
   {% csrf_token %}
     <h3><label for="id_q">Search</label></h3>
     <div style="text-align:right;">
