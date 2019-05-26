@@ -137,3 +137,38 @@ class Product(models.Model):
             return self.price
         else:
             return None
+
+    def cross_sells(self):
+        """ Gets other Product instances that
+            have been combined with the current instance in past orders.
+            Includes any orders placed by anonymous users that haven't registered
+        """
+        from checkout.models import Order, OrderItem
+        orders = Order.objects.filter(orderitem__product=self)
+        order_items = OrderItem.objects.filter(order__in=orders).exclude(product=self)
+        products = Product.active.filter(orderitem__in=order_items).distinct()
+        return products
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
