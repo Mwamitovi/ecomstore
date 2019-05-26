@@ -110,9 +110,15 @@ class Product(models.Model):
     # Active Product Manager
     active = ActiveProductManager()
 
+    # Added a store location
+    location = models.CharField(max_length=50, default='Kampala-Kasubi')
+
     class Meta:
         db_table = 'products'
         ordering = ['-created_at']
+        permissions = (
+            ("kasubi_store", "Kasubi Store"),
+        )
 
     def __str__(self):
         return self.name
