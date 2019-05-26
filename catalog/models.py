@@ -138,6 +138,7 @@ class Product(models.Model):
         else:
             return None
 
+    # usually purchased with this product...
     def cross_sells(self):
         """ Gets other Product instances that
             have been combined with the current instance in past orders.
@@ -149,8 +150,19 @@ class Product(models.Model):
         products = Product.active.filter(orderitem__in=order_items).distinct()
         return products
 
-
-
+    # users who purchased this product also bought....
+    def cross_sells_user(self):
+        """ Gets other Product instances that were ordered by
+            other registered customers who also ordered the current instance.
+            Uses all past orders of each registered customer, and
+            not just the order in which the current instance was purchased
+        """
+        from checkout.models import Order, OrderItem
+        from django.contrib.auth.models import User
+        users = User.objects.filter(order__orderitem__product=self)
+        items = OrderItem.objects.filter(order__user__in=users).exclude(produc=self)
+        products = Product.active.filter(orderitem__in=items).distinct()
+        return products
 
 
 
