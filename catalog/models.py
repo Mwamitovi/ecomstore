@@ -157,6 +157,7 @@ class Product(models.Model):
             Uses all past orders of each registered customer, and
             not just the order in which the current instance was purchased
         """
+        # noinspection PyUnresolvedReferences
         from checkout.models import Order, OrderItem
         from django.contrib.auth.models import User
         users = User.objects.filter(order__orderitem__product=self)
@@ -164,23 +165,18 @@ class Product(models.Model):
         products = Product.active.filter(orderitem__in=items).distinct()
         return products
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    def cross_sells_hybrid(self):
+        """ Gets other Product instances that were both combined with
+            the current instance in orders placed by unregistered customers,
+            and also all products that were ordered by registered customers
+        """
+        from checkout.models import Order, OrderItem
+        from django.contrib.auth.models import User
+        from django.db.models import Q
+        orders = Order.objects.filter(orderitem__product=self)
+        users = User.objects.filter(order__orderitem__product=self)
+        items = OrderItem.objects.filter(
+            Q(order__in=orders) | Q(order__user__in=users)
+        ).exclude(product=self)
+        products = Product.active.filter(orderitem__in=items).distinct()
+        return products
