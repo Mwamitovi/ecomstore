@@ -13,3 +13,8 @@ class PageView(models.Model):
     ip_address = models.GenericIPAddressField()
     user = models.ForeignKey(User, null=True)
     tracking_id = models.CharField(max_length=50, default='')
+
+
+class ProductView(PageView):
+    """ tracks "product" pages that a customer views """
+    product = models.ForeignKey(Product)
