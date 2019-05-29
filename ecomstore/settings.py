@@ -166,3 +166,6 @@ LOGIN_REDIRECT_URL = '/accounts/my_account/'
 
 # search results
 PRODUCTS_PER_PAGE = 12
+
+# search results from the highest-ranking 3 words
+PRODUCTS_PER_ROW = 4
