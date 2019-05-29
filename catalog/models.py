@@ -117,7 +117,7 @@ class Product(models.Model):
         db_table = 'products'
         ordering = ['-created_at']
         permissions = (
-            ("kasubi_store", "Kasubi Store"),
+            ("kasubi_store", "Based at Kasubi Store"),
         )
 
     def __str__(self):
