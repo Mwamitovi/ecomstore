@@ -8,15 +8,21 @@ from django.http import HttpResponseRedirect
 from catalog.forms import ProductAddToCartForm
 from utils import context_processors
 from stats import stats
+from ecomstore.settings import PRODUCTS_PER_ROW
 
 
 def index(request, template_name):
+    """ site home page """
+    search_recoms = stats.recommended_from_search(request)
+    featured = Product.featured.all()[0:PRODUCTS_PER_ROW]
+    recently_viewed = stats.get_recently_viewed(request)
+    view_recoms = stats.recommended_from_views(request)
     page_title = 'Musical Instruments and Sheet Music for Musicians'
 
     return render(
         request,
         template_name,
-        {'page_title': page_title},
+        locals(),
         RequestContext(request, processors=[context_processors])
     )
 
