@@ -17,4 +17,4 @@ class PageView(models.Model):
 
 class ProductView(PageView):
     """ tracks "product" pages that a customer views """
-    product = models.ForeignKey(Product)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
