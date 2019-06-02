@@ -5,7 +5,7 @@
  */
 
 // The Complete end-to-end example using the Google Pay API JavaScript Library
-// Adapted from https:developers.google.com/pay/api/wed/guides/tutorial
+// Adapted from https://developers.google.com/pay/api/wed/guides/tutorial
 // if within markup, place this under one script
 
 /**
