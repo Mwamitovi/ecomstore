@@ -76,6 +76,41 @@ def log_product_view(request, product):
         v.save()
 
 
+def recommended_from_views(request):
+    """ Pick product recommendations based on products the customer viewed;
+        we get a list of tracking-IDs of other customers who also
+        viewed the same products in the current customer's viewed products,
+        and pick products which those other customers also viewed.
+    """
+    # get the recently viewed products
+    viewed = get_recently_viewed(request)
+    # if there are any previously viewed products,
+    # get other tracking-ids that have viewed these same products
+    if viewed:
+        # note that .values() returns a QuerySet that returns dictionaries,
+        # rather than model instances, when used as an iterable.
+        products_viewed = ProductView.objects.filter(product__in=viewed).values('tracking_id')
+        t_ids = [v['tracking_id'] for v in products_viewed]
+        # if there are other tracking-ids, get those products
+        if t_ids:
+            all_viewed = Product.active.filter(products_viewed__tracking_id__in=t_ids)
+            # if there are other products, get them, but exclude
+            # any products that the customer has already seen/viewed
+            if all_viewed:
+                other_viewed = ProductView.objects.filter(
+                    product__in=all_viewed).exclude(product__in=viewed)
+                if other_viewed:
+                    return Product.active.filter(products_viewed__in=other_viewed).distinct()
+
+
+def get_recently_viewed(request):
+    """ get settings.PRODUCTS_PER_ROW most recently viewed products for current customer """
+    t_id = tracking_id(request)
+    views = ProductView.objects.filter(
+        tracking_id=t_id).values('product_id').order_by('-date')[0:PRODUCTS_PER_ROW]
+    product_ids = [v['product_id'] for v in views]
+    return Product.active.filter(id__in=product_ids)
+
 
 
 
