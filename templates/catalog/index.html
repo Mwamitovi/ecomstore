@@ -1,6 +1,12 @@
-{# templates/catalog/index.html #}
+{# templates/catalog/index.html - home page #}
 {% extends "catalog.html" %}
+
+{% load catalog_tags %}
 
 {%block content %}
     <h1>Welcome to Modern Musician!</h1>
+    {% product_list recently_viewed 'Your Recently Viewed' %}
+    {% product_list view_recoms 'Similar Products' %}
+    {% product_list featured 'Featured Products' %}
+    {% product_list search_recoms 'Recommended For You' %}
 {% endblock %}
