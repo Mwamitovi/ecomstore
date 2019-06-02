@@ -14,7 +14,8 @@ def tracking_id(request):
     try:
         return request.session['tracking_id']
     except KeyError:
-        request.session['tracking_id'] = base64.b64encode(os.urandom(36))
+        request.session['tracking_id'] = \
+            base64.b64encode(os.urandom(36)).decode('ascii')
         return request.session['tracking_id']
 
 
