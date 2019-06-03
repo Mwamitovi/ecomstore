@@ -7,17 +7,22 @@ from cart import cart
 from django.http import HttpResponseRedirect
 from catalog.forms import ProductAddToCartForm
 from utils import context_processors
+from stats import stats
+from ecomstore.settings import PRODUCTS_PER_ROW
 
 
 def index(request, template_name):
+    """ site home page """
+    search_recoms = stats.recommended_from_search(request)
+    featured = Product.featured.all()[0:PRODUCTS_PER_ROW]
+    recently_viewed = stats.get_recently_viewed(request)
+    view_recoms = stats.recommended_from_views(request)
     page_title = 'Musical Instruments and Sheet Music for Musicians'
-    # return render_to_response(
-    #     template_name, locals(), RequestContext(request, [context_processors])
-    # )
+
     return render(
         request,
         template_name,
-        {'page_title': page_title},
+        locals(),
         RequestContext(request, processors=[context_processors])
     )
 
@@ -28,9 +33,7 @@ def show_category(request, category_slug, template_name):
     page_title = c.name
     meta_keywords = c.meta_keywords
     meta_description = c.meta_description
-    # return render_to_response(
-    #     template_name, locals(), RequestContext(request)
-    # )
+
     return render(
         request,
         template_name,
@@ -72,9 +75,10 @@ def show_product(request, product_slug, template_name):
     form.fields['product_slug'].widget.attrs['value'] = product_slug
     # set the test cookie on our first GET request
     request.session.set_test_cookie()
-    # return render_to_response(
-    #     template_name, locals(), RequestContext(request)
-    # )
+    # log current user as having seen/viewed this product instance
+    # utilized in evaluating product recommendations
+    stats.log_product_view(request, p)
+
     return render(
         request,
         template_name,

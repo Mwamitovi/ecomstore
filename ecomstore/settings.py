@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'cart',
     'checkout',
     'accounts',
+    'search',
+    'stats',
 ]
 
 MIDDLEWARE = [
@@ -161,3 +163,9 @@ SESSION_COOKIE_AGE = 60*60*24*SESSION_COOKIE_DAYS
 
 # Redirects to a custom page, after login
 LOGIN_REDIRECT_URL = '/accounts/my_account/'
+
+# search results
+PRODUCTS_PER_PAGE = 12
+
+# search results from the highest-ranking 3 words
+PRODUCTS_PER_ROW = 4

@@ -31,7 +31,8 @@ urlpatterns = [
     url(r'^accounts/', include('accounts.urls', namespace='accounts')),
     url(r'^', include('catalog.urls', namespace='catalog')),
     url(r'^cart/', include('cart.urls', namespace='cart')),
-    url(r'^checkout/', include('checkout.urls', namespace='checkout'))
+    url(r'^checkout/', include('checkout.urls', namespace='checkout')),
+    url(r'^search/', include('search.urls', namespace='search'))
 ]
 
 handler404 = views.file_not_found_404

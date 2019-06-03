@@ -5,8 +5,20 @@ from django.db import models
 from django.urls import reverse
 
 
+class ActiveCategoryManager(models.Manager):
+    """ Manager class
+        to return only those categories where each instance is active
+    """
+    def get_queryset(self):
+        return super(ActiveCategoryManager, self)\
+            .get_queryset().filter(is_active=True)
+
+
 @python_2_unicode_compatible
 class Category(models.Model):
+    """ Model class containing information about
+        a category in the product catalog
+    """
     name = models.CharField(max_length=50)
     slug = models.SlugField(
         max_length=50, unique=True,
@@ -25,6 +37,11 @@ class Category(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    # default Category Manager
+    objects = models.Manager()
+    # Active Category Manager
+    active = ActiveCategoryManager()
+
     class Meta:
         db_table = 'categories'
         ordering = ['-created_at']
@@ -42,8 +59,30 @@ class Category(models.Model):
         )
 
 
+class ActiveProductManager(models.Manager):
+    """ Manager class
+        to return only those products where each instance is "active"
+    """
+    def get_queryset(self):
+        return super(ActiveProductManager, self)\
+            .get_queryset().filter(is_active=True)
+
+
+class FeaturedProductManager(models.Manager):
+    """ Manager class
+        to return only those products where each instance is "featured"
+    """
+    def get_query_set(self):
+        return super(FeaturedProductManager, self)\
+            .get_query_set().filter(is_active=True).filter(is_featured=True)
+
+
 @python_2_unicode_compatible
 class Product(models.Model):
+    """ Model class containing information about a product;
+        instances of this class are what the user adds to their
+        shopping cart and can subsequently purchase
+    """
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(
         max_length=255, unique=True,
@@ -75,9 +114,22 @@ class Product(models.Model):
     thumbnail = models.ImageField(upload_to='images/products/thumbnails')
     image_caption = models.CharField(max_length=200)
 
+    # default Product Manager
+    objects = models.Manager()
+    # Active Product Manager
+    active = ActiveProductManager()
+    # Featured Product Manager
+    featured = FeaturedProductManager()
+
+    # Added a store location
+    location = models.CharField(max_length=50, default='Kampala-Kasubi')
+
     class Meta:
         db_table = 'products'
         ordering = ['-created_at']
+        permissions = (
+            ("kasubi_store", "Based at Kasubi Store"),
+        )
 
     def __str__(self):
         return self.name
@@ -96,3 +148,46 @@ class Product(models.Model):
             return self.price
         else:
             return None
+
+    # usually purchased with this product...
+    def cross_sells(self):
+        """ Gets other Product instances that
+            have been combined with the current instance in past orders.
+            Includes any orders placed by anonymous users that haven't registered
+        """
+        from checkout.models import Order, OrderItem
+        orders = Order.objects.filter(orderitem__product=self)
+        order_items = OrderItem.objects.filter(order__in=orders).exclude(product=self)
+        products = Product.active.filter(orderitem__in=order_items).distinct()
+        return products
+
+    # users who purchased this product also bought....
+    def cross_sells_user(self):
+        """ Gets other Product instances that were ordered by
+            other registered customers who also ordered the current instance.
+            Uses all past orders of each registered customer, and
+            not just the order in which the current instance was purchased
+        """
+        # noinspection PyUnresolvedReferences
+        from checkout.models import Order, OrderItem
+        from django.contrib.auth.models import User
+        users = User.objects.filter(order__orderitem__product=self)
+        items = OrderItem.objects.filter(order__user__in=users).exclude(produc=self)
+        products = Product.active.filter(orderitem__in=items).distinct()
+        return products
+
+    def cross_sells_hybrid(self):
+        """ Gets other Product instances that were both combined with
+            the current instance in orders placed by unregistered customers,
+            and also all products that were ordered by registered customers
+        """
+        from checkout.models import Order, OrderItem
+        from django.contrib.auth.models import User
+        from django.db.models import Q
+        orders = Order.objects.filter(orderitem__product=self)
+        users = User.objects.filter(order__orderitem__product=self)
+        items = OrderItem.objects.filter(
+            Q(order__in=orders) | Q(order__user__in=users)
+        ).exclude(product=self)
+        products = Product.active.filter(orderitem__in=items).distinct()
+        return products

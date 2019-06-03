@@ -1,0 +1,10 @@
+{# templates/tags/search_box.html #}
+
+<form id="search" method="GET" action="{% url 'search:search_results' %}">
+  {% csrf_token %}
+    <h3><label for="id_q">Search</label></h3>
+    <div style="text-align:right;">
+        {{ form.q }}
+        <input type="submit" value="Search" />
+    </div>
+</form>
