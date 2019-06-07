@@ -16,4 +16,7 @@ urlpatterns = [
         {'template_name': 'catalog/product.html'},
         name='catalog_product'
         ),
+    url(r'^review/product/add/$', views.add_review,
+        name='add_product_review'
+        ),
 ]
