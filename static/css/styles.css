@@ -266,3 +266,19 @@ table#register{
 	fieldset.my_account ul li{
 		margin-bottom: 5px;		
 	}
+
+#add_review{
+	cursor:pointer;
+}
+
+.hidden{
+	display:none;
+}
+
+.visible{
+	display:block;
+}
+
+.new_review{
+	background-color:Pink;
+}
