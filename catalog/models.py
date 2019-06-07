@@ -64,9 +64,9 @@ class ActiveProductManager(models.Manager):
     """ Manager class
         to return only those products where each instance is "active"
     """
-    def get_queryset(self):
+    def get_query_set(self):
         return super(ActiveProductManager, self)\
-            .get_queryset().filter(is_active=True)
+            .get_query_set().filter(is_active=True)
 
 
 class FeaturedProductManager(models.Manager):
@@ -194,11 +194,21 @@ class Product(models.Model):
         return products
 
 
+class ActiveProductReviewManager(models.Manager):
+    """ Manager class to return only those product reviews where
+        each instance is approved
+    """
+    def all(self):
+        return super(ActiveProductReviewManager, self).all().filter(is_approved=True)
+
+
 class ProductReview(models.Model):
     """ model class containing product review data associated
         with a product instance
     """
-    RATINGS = ((5,5),(4,4),(3,3),(2,2),(1,1),)
+    RATINGS = (
+        (5, 5), (4, 4), (3, 3), (2, 2), (1, 1),
+    )
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -207,36 +217,7 @@ class ProductReview(models.Model):
     rating = models.PositiveSmallIntegerField(default=5, choices=RATINGS)
     is_approved = models.BooleanField(default=True)
     content = models.TextField()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    # default ProductReview Manager
+    objects = models.Manager()
+    # Approved ProductReview Manager
+    approved = ActiveProductReviewManager()
