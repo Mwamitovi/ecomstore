@@ -1,11 +1,11 @@
 # catalog/views.py
 from django.shortcuts import get_object_or_404, render_to_response, render
-from catalog.models import Category, Product
+from catalog.models import Category, Product, ProductReview
 from django.template import RequestContext
 from django.core import urlresolvers
 from cart import cart
 from django.http import HttpResponseRedirect
-from catalog.forms import ProductAddToCartForm
+from catalog.forms import ProductAddToCartForm, ProductReviewForm
 from utils import context_processors
 from stats import stats
 from ecomstore.settings import PRODUCTS_PER_ROW
@@ -78,6 +78,9 @@ def show_product(request, product_slug, template_name):
     # log current user as having seen/viewed this product instance
     # utilized in evaluating product recommendations
     stats.log_product_view(request, p)
+    # product review handling
+    product_reviews = ProductReview.approved.filter(product=p).order_by('-date')
+    review_form = ProductReviewForm()
 
     return render(
         request,
