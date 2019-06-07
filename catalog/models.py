@@ -64,18 +64,18 @@ class ActiveProductManager(models.Manager):
     """ Manager class
         to return only those products where each instance is "active"
     """
-    def get_query_set(self):
+    def get_queryset(self):
         return super(ActiveProductManager, self)\
-            .get_query_set().filter(is_active=True)
+            .get_queryset().filter(is_active=True)
 
 
 class FeaturedProductManager(models.Manager):
     """ Manager class
         to return only those products where each instance is "featured"
     """
-    def get_query_set(self):
+    def get_queryset(self):
         return super(FeaturedProductManager, self)\
-            .get_query_set().filter(is_active=True).filter(is_featured=True)
+            .get_queryset().filter(is_active=True).filter(is_featured=True)
 
 
 @python_2_unicode_compatible
