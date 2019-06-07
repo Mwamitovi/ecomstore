@@ -1,6 +1,6 @@
 # catalog/forms.py
 from django import forms
-from catalog.models import Product
+from catalog.models import Product, ProductReview
 
 
 class ProductAdminForm(forms.ModelForm):
@@ -54,3 +54,10 @@ class ProductAddToCartForm(forms.Form):
             if not self.request.session.test_cookie_worked():
                 raise forms.ValidationError("Cookies must be enabled.")
         return self.cleaned_data
+
+
+class ProductReviewForm(forms.ModelForm):
+    """ Form class to submit a new ProductReview instance """
+    class Meta:
+        model = ProductReview
+        exclude = ('user', 'product', 'is_approved')
