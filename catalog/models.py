@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.utils.encoding import python_2_unicode_compatible
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 class ActiveCategoryManager(models.Manager):
@@ -191,3 +192,51 @@ class Product(models.Model):
         ).exclude(product=self)
         products = Product.active.filter(orderitem__in=items).distinct()
         return products
+
+
+class ProductReview(models.Model):
+    """ model class containing product review data associated
+        with a product instance
+    """
+    RATINGS = ((5,5),(4,4),(3,3),(2,2),(1,1),)
+
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=50)
+    date = models.DateTimeField(auto_now_add=True)
+    rating = models.PositiveSmallIntegerField(default=5, choices=RATINGS)
+    is_approved = models.BooleanField(default=True)
+    content = models.TextField()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
