@@ -1,0 +1,13 @@
+{# templates/catalog/product_reviews.html #}
+
+<div class="review">
+    <p>
+        Rating: {{ review.rating }}
+        <strong>{{ review.title }}</strong>
+        by {{ review.user.username }}
+        <br/>
+        {{ review.content }}
+        <br/><br/>
+        <hr/>
+    </p>
+</div>
