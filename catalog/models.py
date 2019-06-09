@@ -4,6 +4,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
+from tagging.registry import register
 
 
 class ActiveCategoryManager(models.Manager):
@@ -192,6 +193,11 @@ class Product(models.Model):
         ).exclude(product=self)
         products = Product.active.filter(orderitem__in=items).distinct()
         return products
+
+
+# registered Product model
+# to use with the tagging application
+register(Product)
 
 
 class ActiveProductReviewManager(models.Manager):
