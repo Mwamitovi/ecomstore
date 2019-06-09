@@ -19,4 +19,7 @@ urlpatterns = [
     url(r'^review/product/add/$', views.add_review,
         name='add_product_review'
         ),
+    url(r'^tag/product/add/$', views.add_tag,
+        name='add_tag'
+        ),
 ]
