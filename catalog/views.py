@@ -16,6 +16,7 @@ from stats import stats
 
 import tagging
 from tagging.models import Tag, TaggedItem
+from tagging.utils import LOGARITHMIC
 
 
 def index(request, template_name):
@@ -152,6 +153,34 @@ def add_tag(request):
         response,
         content_type='application/javascript; charset=utf-8'
     )
+
+
+def tag_cloud(request, template_name="catalog/tag_cloud.html"):
+    """ contains a list of tags for active products,
+        sized proportionately by relative frequency
+    """
+    product_tags = Tag.objects.cloud_for_model(
+        Product,
+        steps=9,
+        distribution=LOGARITHMIC,
+        filters={'is_active': True}
+    )
+    page_title = 'Product Tag Cloud'
+    return render(
+        request,
+        template_name,
+        locals(),
+        RequestContext(request, processors=[context_processors])
+    )
+
+
+
+
+
+
+
+
+
 
 
 
