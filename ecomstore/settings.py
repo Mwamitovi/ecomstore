@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     # Added
     'django.contrib.sites',
     'django.contrib.flatpages',
+    'tagging',  # django-tagging
     'catalog',
     'utils',
     'cart',
