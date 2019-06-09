@@ -302,3 +302,18 @@ table#register{
 	text-align: center;
 	z-index:100;
 }
+
+#noscript{
+	position:fixed;
+	top:0;left:0;
+	width:100%;
+	background-color:Red;
+	color:White;
+	font-weight:bold;
+	padding:5px;
+	text-align:center;
+}
+
+#noscript_padder{
+	height:30px;
+}
