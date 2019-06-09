@@ -56,6 +56,14 @@ function prepareDocument(){
     jQuery("#add_review").click(slideToggleReviewForm);
     jQuery("#add_review").addClass('visible');
     jQuery("#cancel_review").click(slideToggleReviewForm);
+    // tagging functionality
+    jQuery("#add_tag").click(addTag());
+    jQuery("#id_tag").keypress(function(event){
+        if(event.keyCode == 13 && jQuery("#id_tag").val().length > 2){
+            addTag();
+            event.preventDefault();
+        }
+    });
 }
 
 jQuery(document).ready(prepareDocument);
