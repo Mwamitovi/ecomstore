@@ -174,7 +174,15 @@ def tag_cloud(request, template_name="catalog/tag_cloud.html"):
     )
 
 
-
+def tag(request, _tag, template_name="catalog/tag.html"):
+    """ lists products which have been tagged with a given tag """
+    products = TaggedItem.objects.get_by_model(Product.active, _tag)
+    return render(
+        request,
+        template_name,
+        locals(),
+        RequestContext(request, processors=[context_processors])
+    )
 
 
 
