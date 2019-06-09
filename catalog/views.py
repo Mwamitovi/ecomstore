@@ -141,11 +141,11 @@ def add_tag(request):
         p = Product.active.get(slug=_slug)
         html = u''
         template = "catalog/tag_link.html"
-        for tag in tags.split():
-            tag.strip(',')
-            Tag.objects.add_tag(p, tag)
-        for tag in p.tags:
-            html += render_to_string(template, {'tag': tag})
+        for _tag in tags.split():
+            _tag.strip(',')
+            Tag.objects.add_tag(p, _tag)
+        for _tag in p.tags:
+            html += render_to_string(template, {'tag': _tag})
         response = json.dumps({'success': 'True', 'html': html})
     else:
         response = json.dumps({'success': 'False'})
