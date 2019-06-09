@@ -282,3 +282,7 @@ table#register{
 .new_review{
 	background-color:Pink;
 }
+
+#tags a{
+	color:DarkOrange;
+}
