@@ -28,7 +28,7 @@ function addProductReview(){
                 // add the error text to the review_errors <div>
                 jQuery("#review_errors").append(response.html);
             }
-        }, "json")
+        }, "json");
 }
 
 // toggles visibility of the "write review" link
@@ -36,6 +36,22 @@ function addProductReview(){
 function slideToggleReviewForm(){
 	jQuery("#review_form").slideToggle();
 	jQuery("#add_review").slideToggle();
+}
+
+function addTag(){
+    // build the tag object
+    var tag = {
+        tag: jQuery("#id_tag").val(),
+        slug: jQuery("#id_slug").val()
+    };
+    jQuery.post("/tag/product/add", tag,
+        function(response){
+            if(response.success == "True"){
+                jQuery("#tags").empty();
+                jQuery("#tags").append(response.html);
+                jQuery("#id_tag").val();
+            }
+        }, "json");
 }
 
 // Main script file
