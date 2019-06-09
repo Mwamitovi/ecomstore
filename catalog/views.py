@@ -155,7 +155,7 @@ def add_tag(request):
     )
 
 
-def tag_cloud(request, template_name="catalog/tag_cloud.html"):
+def tag_cloud(request, template_name):
     """ contains a list of tags for active products,
         sized proportionately by relative frequency
     """
@@ -174,7 +174,7 @@ def tag_cloud(request, template_name="catalog/tag_cloud.html"):
     )
 
 
-def tag(request, _tag, template_name="catalog/tag.html"):
+def tag(request, _tag, template_name):
     """ lists products which have been tagged with a given tag """
     products = TaggedItem.objects.get_by_model(Product.active, _tag)
     return render(
