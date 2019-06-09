@@ -14,6 +14,9 @@ from utils import context_processors
 from cart import cart
 from stats import stats
 
+import tagging
+from tagging.models import Tag, TaggedItem
+
 
 def index(request, template_name):
     """ site home page """
@@ -121,3 +124,52 @@ def add_review(request):
         response,
         content_type='application/javascript; charset=utf-8'
     )
+
+
+@login_required
+def add_tag(request):
+    """ AJAX view that takes a form POST containing variables for a new product tag;
+        requires a valid product 'slug' and comma-delimited tag list;
+        returns a JSON response containing two variables:
+        - success: indicates the status of save operation, and
+        - tag: contains rendered HTML of all product pages for updating the product page.
+    """
+    tags = request.POST.get('tag', '')
+    _slug = request.POST.get('slug', '')
+    if len(tags) > 2:
+        p = Product.active.get(slug=_slug)
+        html = u''
+        template = "catalog/tag_link.html"
+        for tag in tags.split():
+            tag.strip(',')
+            Tag.objects.add_tag(p, tag)
+        for tag in p.tags:
+            html += render_to_string(template, {'tag': tag})
+        response = json.dumps({'success': 'True', 'html': html})
+    else:
+        response = json.dumps({'success': 'False'})
+    return HttpResponse(
+        response,
+        content_type='application/javascript; charset=utf-8'
+    )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
