@@ -54,6 +54,14 @@ function addTag(){
         }, "json");
 }
 
+// give user feedback, while processing product reviews
+function statusBox(){
+    jQuery("<div id='loading'>Loading...</div>")
+        .prependTo("#main")
+        .ajaxStart(function(){ jQuery(this).show(); })
+        .ajaxStop(function(){ jQuery(this).hide(); })
+}
+
 // Main script file
 function prepareDocument(){
     // prepare the search bar
