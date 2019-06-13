@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 from django.core import urlresolvers
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 from ecomstore.settings import PRODUCTS_PER_ROW
 from catalog.models import Category, Product, ProductReview
@@ -98,6 +99,7 @@ def show_product(request, product_slug, template_name):
     )
 
 
+@csrf_exempt
 @login_required
 def add_review(request):
     """ AJAX view that takes a form POST from a user submitting a new product review,
@@ -116,7 +118,7 @@ def add_review(request):
         review.save()
 
         template = "catalog/product_review.html"
-        html = render_to_string(template, {'review': review})
+        html = render(request, template, {'review': review})
         response = json.dumps({'success': 'True', 'html': html})
     else:
         html = form.errors.as_ul()
@@ -127,6 +129,7 @@ def add_review(request):
     )
 
 
+@csrf_exempt
 @login_required
 def add_tag(request):
     """ AJAX view that takes a form POST containing variables for a new product tag;
@@ -145,8 +148,8 @@ def add_tag(request):
             _tag.strip(',')
             Tag.objects.add_tag(p, _tag)
         for _tag in p.tags:
-            html += render_to_string(template, {'tag': _tag})
-        response = json.dumps({'success': 'True', 'html': html})
+            html += render(request, template, {'tag': _tag})
+        response = json.dumps({'success': 'True', 'html': html}, indent=4)
     else:
         response = json.dumps({'success': 'False'})
     return HttpResponse(
