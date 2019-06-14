@@ -55,6 +55,7 @@ MIDDLEWARE = [
     # Added
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'ecomstore.SSLMiddleware.SSLRedirect',
+    'ecomstore.marketing.urlcanon.URLCanonicalizationMiddleware',
 ]
 
 SITE_ID = 1
