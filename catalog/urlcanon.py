@@ -3,7 +3,7 @@ from django.http import HttpRequest, HttpResponsePermanentRedirect
 from ecomstore import settings
 
 
-class URLCanonicalizationMiddleWare(object):
+class URLCanonicalizationMiddleware(object):
     """ requires the full hostname to which the middleware will redirect to be in settings.py as:
             CANON_URL_HOST = 'www.your-domain.com'
 
@@ -22,7 +22,7 @@ class URLCanonicalizationMiddleWare(object):
             http://wiki.nginx.org/NginxHttpRewriteModule
             http://blogbuildingu.com/articles/www-redirect-right-way
     """
-    def process_view(selfself, request, view_func, view_args, view_kwargs):
+    def process_view(self, request, view_func, view_args, view_kwargs):
         if not settings.DEBUG:
             """ only perform the redirect if not debug mode """
             protocol = "https://" if request.is_secure() else "http://"
