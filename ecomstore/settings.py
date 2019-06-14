@@ -170,3 +170,12 @@ PRODUCTS_PER_PAGE = 12
 
 # search results from the highest-ranking 3 words
 PRODUCTS_PER_ROW = 4
+
+# hostname of our site to which we redirect all users
+CANON_URL_HOST = 'www.ecomstore.com'
+
+# Optionally, we specify a list of hostnames that, if detected,
+# will be redirected to our canonical hostname.
+# If the list is not present,
+# then all requests not matching the canonical hostname are redirected.
+CANON_URLS_TO_REWRITE = ['ecomstore.com', 'musicapoint.com']
