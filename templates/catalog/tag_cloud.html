@@ -6,7 +6,7 @@
     <h1>Product Tag Cloud</h1>
       {% for tag in product_tags %}
         <a href="/tag/{{ tag.name }}/" 
-           style="font-size:{{ tag.font_size|add:'11' }}px;">
+           style="font-size: {{ tag.font_size|add:'11' }} px;">
            {{ tag.name|slugify }}
         </a>&nbsp;
       {% endfor %}
