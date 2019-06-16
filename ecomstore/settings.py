@@ -31,10 +31,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Added
+    # Added generic apps
     'django.contrib.sites',
     'django.contrib.flatpages',
+    'django.contrib.sitemaps'
     'tagging',  # django-tagging
+    # Added project apps
     'catalog',
     'utils',
     'cart',
