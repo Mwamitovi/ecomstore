@@ -1,9 +1,10 @@
 # marketing/urlcanon.py
 from django.http import HttpRequest, HttpResponsePermanentRedirect
+from django.utils.deprecation import MiddlewareMixin
 from ecomstore import settings
 
 
-class URLCanonicalizationMiddleware(object):
+class URLCanonicalizationMiddleware(MiddlewareMixin):
     """ requires the full hostname to which the middleware will redirect to be in settings.py as:
             CANON_URL_HOST = 'www.your-domain.com'
 
