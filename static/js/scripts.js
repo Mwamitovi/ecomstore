@@ -44,7 +44,7 @@ function addTag(){
         tag: jQuery("#id_tag").val(),
         slug: jQuery("#id_slug").val()
     };
-    jQuery.post("/tag/product/add", tag,
+    jQuery.post("/tag/product/add/", tag,
         function(response){
             if(response.success == "True"){
                 jQuery("#tags").empty();
@@ -81,7 +81,7 @@ function prepareDocument(){
     jQuery("#add_review").addClass('visible');
     jQuery("#cancel_review").click(slideToggleReviewForm);
     // tagging functionality
-    jQuery("#add_tag").click(addTag());
+    jQuery("#add_tag").click(addTag);
     jQuery("#id_tag").keypress(function(event){
         if(event.keyCode == 13 && jQuery("#id_tag").val().length > 2){
             addTag();
