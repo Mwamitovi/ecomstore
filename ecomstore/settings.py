@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'django.contrib.sitemaps',
     'tagging',  # django-tagging
+    'django.contrib.redirects',
     # Added project apps
     'catalog',
     'utils',
@@ -58,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'ecomstore.SSLMiddleware.SSLRedirect',
     'marketing.urlcanon.URLCanonicalizationMiddleware',
+    'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
 ]
 
 SITE_ID = 1
