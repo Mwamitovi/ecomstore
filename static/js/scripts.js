@@ -1,5 +1,6 @@
 
 function addProductReview(){
+    console.log("add product review is working!");  // sanity check
     // build an object of review data to submit
     var review = {
         title: jQuery("#id_title").val(),
@@ -8,7 +9,15 @@ function addProductReview(){
         slug: jQuery("#id_slug").val()
     };
     // make a request, and process the response
-    jQuery.post("/review/product/add/", review,
+    jQuery.post(
+        // url absolute path
+        "/review/product/add/",         
+        { // build an object of review data to submit
+            title: jQuery("#id_title").val(),
+            content: jQuery("#id_content").val(),
+            rating: jQuery("#id_rating").val(),
+            slug: jQuery("#id_slug").val()
+        },
         function(response){
             jQuery("#review_errors").empty();
             // evaluate the 'success' parameter
@@ -18,7 +27,7 @@ function addProductReview(){
                 // if this is the first review, get rid of the 'No reviews' text
                 jQuery("#no_reviews").empty();
                 // then, add the new review to the reviews section
-                jQuery("#reviews").prepend(reponse.html).slideDown();
+                jQuery("#reviews").prepend(reponse.html()).slideDown();
                 // and get the newly added review and style it with color
                 new_review = jQuery("#reviews").children(":first");
                 new_review.addClass("new_review");
