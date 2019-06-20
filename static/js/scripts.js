@@ -50,12 +50,19 @@ function prepareDocument(){
             return false;
         }
     });
-    // prepare the product review form
-    jQuery("#submit_review").click(addProductReview);
+
+    // Hide/show the product review form
     jQuery("#review_form").addClass('hidden');
     jQuery("#add_review").click(slideToggleReviewForm);
     jQuery("#add_review").addClass('visible');
     jQuery("#cancel_review").click(slideToggleReviewForm);
+
+    // Submit product review upon submit
+    $('#submit_review').click('submit', function($e) {
+        $e.preventDefault();
+        console.log("form submitted!");  // sanity check
+        addProductReview();
+    });    
 
     // This function gets the cookie with a given name
     function getCookie(name) {
