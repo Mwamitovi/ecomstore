@@ -96,28 +96,42 @@ def show_product(request, product_slug, template_name):
 
 @login_required
 def add_review(request):
-    """ AJAX view that takes a form POST from a user submitting a new product review,
-        requires a valid product slug and args from an instance of ProductReviewForm,
+    """ AJAX view, uses POST method to get review from a new user product review,
+        requires a valid product slug and args from an instance of ProductReview,
         returns a JSON response containing two variables:
         - review: contains a rendered template of the product review to update the product page,
         - success: a True/False value indicating if the save was successful.
     """
-    form = ProductReviewForm(request.POST)
-    if form.is_valid():
-        review = form.save(commit=False)
-        _slug = request.POST.get('slug')
-        _product = Product.active.get(slug='_slug')
-        review.user = request.user
-        review.product = _product
+    if request.method == 'POST':
+        postdata = request.POST.copy()
+        _slug = postdata.get('slug', '')
+        _product = Product.active.get(slug=_slug)
+        _title = postdata.get('title', '')
+        _content = postdata.get('content', '')
+        _rating = postdata.get('rating', '')
+        # create a review object from the AJAX data
+        review = ProductReview(
+            product=_product,
+            user=request.user,
+            title=_title,
+            rating=_rating,
+            content=_content
+        )
         review.save()
 
-        template = "catalog/product_review.html"
-        html = render_to_string(template, {'review': review})
-        response = json.dumps({'success': 'True', 'html': html})
+        review_data = {
+            'result': 'Review is created',
+            'title': review.title,
+            'rating': review.rating,
+            'content': review.content
+        }
+
+        # html = render_to_string(template, {'review': review})
+        response = json.dumps(review_data)
     else:
-        html = form.errors.as_ul()
-        response = json.dumps({'success': 'False', 'html': html})
+        # html = form.errors.as_ul()
+        response = json.dumps({'failed': 'No review submitted'})
     return HttpResponse(
         response,
-        content_type='application/javascript; charset=utf-8'
+        content_type='application/json'
     )
