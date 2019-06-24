@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-from ecomstore.base_settings import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -184,3 +183,9 @@ CANON_URL_HOST = 'www.ecomstore.com'
 # If the list is not present,
 # then all requests not matching the canonical hostname are redirected.
 CANON_URLS_TO_REWRITE = ['ecomstore.com', 'musicapoint.com']
+
+# import variables from local settings
+try:
+    from ecomstore.settings_local import *
+except ImportError:
+    pass
