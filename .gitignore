@@ -2,7 +2,7 @@
 
 # project files
 migrations
-base_settings.py
+settings_local.py
 db.sqlite3
 manage.py
 
