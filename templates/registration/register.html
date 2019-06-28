@@ -2,7 +2,7 @@
 {% extends "catalog.html" %}
 
 {% block content %}
-    <form action="." method="post">
+    <form action="{% url 'accounts:my_account' %}" method="post">
       {% csrf_token %}  
         <table summary="Register" id="register">
             <caption>Sign Up For Your Account</caption>
