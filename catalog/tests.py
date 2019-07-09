@@ -5,6 +5,7 @@ from django.contrib.auth import SESSION_KEY
 import http
 
 from catalog.models import Category, Product
+from catalog.forms import ProductAddToCartForm
 
 
 class NewUserTestCase(TestCase):
@@ -62,6 +63,11 @@ class NewUserTestCase(TestCase):
         self.assertTemplateUsed(response, _template_name)
         self.assertContains(response, product.name)
         self.assertContains(response, product.description)
+        # check for cart form in product page response
+        cart_form = response.context[0]['form']
+        self.failUnless(cart_form)
+        # check that the cart form is instance of correct form class
+        self.failUnless(isinstance(cart_form, ProductAddToCartForm))
 
 
 
