@@ -4,10 +4,11 @@ from django.urls import reverse, resolve
 from django.contrib.auth import SESSION_KEY
 import http
 
-from catalog.models import Category
+from catalog.models import Category, Product
 
 
 class NewUserTestCase(TestCase):
+    """ tests an Anonymous user browsing the site pages """
 
     fixtures = ['initial_data']
 
@@ -28,6 +29,7 @@ class NewUserTestCase(TestCase):
         self.assertEqual(response.status_code, http.HTTPStatus.OK)
 
     def test_view_category(self):
+        """ test category view loads """
         category = Category.active.all()[0]
         category_url = category.get_absolute_url()
         # get the template_name arg from URL entry
@@ -44,6 +46,22 @@ class NewUserTestCase(TestCase):
         # test that category page contains category information
         self.assertContains(response, category.name)
         self.assertContains(response, category.description)
+
+    def test_view_product(self):
+        """
+        test product view loads
+        - similar to our category test
+        """
+        product = Product.active.all()[0]
+        product_url = product.get_absolute_url()
+        url_entry = resolve(product_url)
+        _template_name = url_entry[2]['template_name']
+        response = self.client.get(product_url)
+        self.failUnless(response)
+        self.assertEqual(response.status_code, http.HTTPStatus.OK)
+        self.assertTemplateUsed(response, _template_name)
+        self.assertContains(response, product.name)
+        self.assertContains(response, product.description)
 
 
 
