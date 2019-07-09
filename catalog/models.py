@@ -3,6 +3,9 @@ from __future__ import unicode_literals
 from django.utils.encoding import python_2_unicode_compatible
 from django.db import models
 from django.urls import reverse
+from django.db.models.signals import post_save, post_delete
+
+from caching.caching import cache_update, cache_evict
 
 
 class ActiveCategoryManager(models.Manager):
@@ -191,3 +194,24 @@ class Product(models.Model):
         ).exclude(product=self)
         products = Product.active.filter(orderitem__in=items).distinct()
         return products
+
+
+# Attach signals to classes to update the
+# cache data on save and delete operations
+# -------------
+# Product model
+post_save.connect(cache_update, sender=Product)
+post_delete.connect(cache_evict, sender=Product)
+# Category model
+post_save.connect(cache_update, sender=Category)
+post_delete.connect(cache_evict, sender=Category)
+
+
+
+
+
+
+
+
+
+
