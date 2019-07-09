@@ -1,8 +1,12 @@
 # templatetags/catalog_tags.py
 from django import template
 from django.contrib.flatpages.models import FlatPage
+from django.core.cache import cache
+
 from cart import cart
 from catalog.models import Category
+from ecomstore.settings import CACHE_TIMEOUT
+
 
 register = template.Library()
 
@@ -15,7 +19,12 @@ def cart_box(request):
 
 @register.inclusion_tag("tags/category_list.html")
 def category_list(request_path):
-    active_categories = Category.active.all()
+    list_cache_key = 'active_category_link_list'
+    active_categories = cache.get(list_cache_key)
+    if not active_categories:
+        active_categories = Category.active.all()
+        cache.set(list_cache_key, active_categories, CACHE_TIMEOUT)
+
     return {
         'active_categories': active_categories,
         'request_path': request_path
