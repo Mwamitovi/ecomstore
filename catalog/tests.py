@@ -2,6 +2,7 @@
 from django.test import TestCase, Client
 from django.urls import reverse, resolve
 from django.contrib.auth import SESSION_KEY
+from django.views.defaults import page_not_found
 import http
 
 from catalog.models import Category, Product
@@ -71,6 +72,32 @@ class NewUserTestCase(TestCase):
         # check for product reviews in product page response
         product_reviews = response.context[0].get('product_reviews', None)
         self.failUnless(product_reviews, None)
+
+
+class ActiveProductManagerTestCase(TestCase):
+    """
+    tests that Product.active manager class returns only active products,
+    and that inactive products return the 404 Not Found template
+    """
+
+    fixtures = ['initial_data']
+
+    def setUp(self):
+        self.client = Client()
+
+    def test_inactive_product_returns_404(self):
+        """ test that inactive product returns a 404 error """
+        inactive_product = Product.objects.filter(is_active=False)[0]
+        inactive_product_url = inactive_product.get_absolute_url()
+        # load the template file used to render the product page
+        url_entry = resolve(inactive_product_url)
+        _template_name = url_entry[2]['template_name']
+        # load the name of the default django 404 template file
+        django_404_template = page_not_found
+        response = self.client.get(inactive_product_url)
+        self.assertTemplateUsed(response, django_404_template)
+        self.assertTemplateNotUsed(response, _template_name)
+
 
 
 
