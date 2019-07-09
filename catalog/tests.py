@@ -41,6 +41,9 @@ class NewUserTestCase(TestCase):
         self.assertEqual(response.status_code, http.HTTPStatus.OK)
         # test that we used the category.html template in response
         self.assertTemplateUsed(response, _template_name)
+        # test that category page contains category information
+        self.assertContains(response, category.name)
+        self.assertContains(response, category.description)
 
 
 
