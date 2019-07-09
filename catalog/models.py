@@ -61,6 +61,10 @@ class Category(models.Model):
             kwargs={'category_slug': self.slug}
         )
 
+    @property
+    def cache_key(self):
+        return self.get_absolute_url()
+
 
 class ActiveProductManager(models.Manager):
     """ Manager class
@@ -144,6 +148,10 @@ class Product(models.Model):
             'catalog:catalog_product',
             kwargs={'product_slug': self.slug}
         )
+
+    @property
+    def cache_key(self):
+        return self.get_absolute_url()
 
     @property
     def sale_price(self):
