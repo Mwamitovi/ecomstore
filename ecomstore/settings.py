@@ -169,3 +169,8 @@ PRODUCTS_PER_PAGE = 12
 
 # search results from the highest-ranking 3 words
 PRODUCTS_PER_ROW = 4
+
+
+# Handling performance - CACHE
+
+CACHE_TIMEOUT = 60 * 60
