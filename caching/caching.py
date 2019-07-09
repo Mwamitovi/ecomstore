@@ -10,7 +10,7 @@ def cache_update(sender, **kwargs):
     a uniquely identifying 'cache_key' property.
     """
     item = kwargs.get('instance')
-    cache.set(item.cach_key, item, CACHE_TIMEOUT)
+    cache.set(item.cache_key, item, CACHE_TIMEOUT)
 
 
 def cache_evict(sender, **kwargs):
