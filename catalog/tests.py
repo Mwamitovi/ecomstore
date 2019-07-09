@@ -68,6 +68,9 @@ class NewUserTestCase(TestCase):
         self.failUnless(cart_form)
         # check that the cart form is instance of correct form class
         self.failUnless(isinstance(cart_form, ProductAddToCartForm))
+        # check for product reviews in product page response
+        product_reviews = response.context[0].get('product_reviews', None)
+        self.failUnless(product_reviews, None)
 
 
 
