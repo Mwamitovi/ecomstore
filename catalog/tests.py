@@ -1,6 +1,6 @@
 # catalog/tests.py
 from django.test import TestCase, Client
-from django.urls import reverse
+from django.urls import reverse, resolve
 from django.contrib.auth import SESSION_KEY
 import http
 
@@ -30,6 +30,9 @@ class NewUserTestCase(TestCase):
     def test_view_category(self):
         category = Category.active.all()[0]
         category_url = category.get_absolute_url()
+        # get the template_name arg from URL entry
+        url_entry = resolve(category_url)
+        _template_name = url_entry[2]['template_name']
         # test loading of category page
         response = self.client.get(category_url)
         # test that we got a response
@@ -37,7 +40,7 @@ class NewUserTestCase(TestCase):
         # test that the HTTP status code is "OK"
         self.assertEqual(response.status_code, http.HTTPStatus.OK)
         # test that we used the category.html template in response
-        self.assertTemplateUsed(response, "catalog/category.html")
+        self.assertTemplateUsed(response, _template_name)
 
 
 
