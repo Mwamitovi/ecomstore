@@ -4,8 +4,12 @@ from django.urls import reverse
 from django.contrib.auth import SESSION_KEY
 import http
 
+from catalog.models import Category
+
 
 class NewUserTestCase(TestCase):
+
+    fixtures = ['initial_data']
 
     def setUp(self):
         self.client = Client()
@@ -22,3 +26,35 @@ class NewUserTestCase(TestCase):
         # check that status code of response is success
         # (http.HTTPStatus.OK = 200)
         self.assertEqual(response.status_code, http.HTTPStatus.OK)
+
+    def test_view_category(self):
+        category = Category.active.all()[0]
+        category_url = category.get_absolute_url()
+        # test loading of category page
+        response = self.client.get(category_url)
+        # test that we got a response
+        self.failUnless(response)
+        # test that the HTTP status code is "OK"
+        self.assertEqual(response.status_code, http.HTTPStatus.OK)
+        # test that we used the category.html template in response
+        self.assertTemplateUsed(response, "catalog/category.html")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
