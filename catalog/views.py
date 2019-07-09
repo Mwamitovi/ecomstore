@@ -30,7 +30,12 @@ def index(request, template_name):
 
 
 def show_category(request, category_slug, template_name):
-    c = get_object_or_404(Category, slug=category_slug)
+    category_cache_key = request.path
+    c = cache.get(category_cache_key)
+    if not c:
+        c = get_object_or_404(Category.active, slug=category_slug)
+        cache.set(category_cache_key, c, CACHE_TIMEOUT)
+
     products = c.product_set.all()
     page_title = c.name
     meta_keywords = c.meta_keywords
