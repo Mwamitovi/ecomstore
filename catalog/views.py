@@ -1,14 +1,16 @@
 # catalog/views.py
-from django.shortcuts import get_object_or_404, render_to_response, render
+from django.shortcuts import get_object_or_404, render
 from catalog.models import Category, Product
 from django.template import RequestContext
 from django.core import urlresolvers
-from cart import cart
 from django.http import HttpResponseRedirect
+from django.core.cache import cache
+
+from cart import cart
 from catalog.forms import ProductAddToCartForm
 from utils import context_processors
 from stats import stats
-from ecomstore.settings import PRODUCTS_PER_ROW
+from ecomstore.settings import PRODUCTS_PER_ROW, CACHE_TIMEOUT
 
 
 def index(request, template_name):
@@ -46,8 +48,15 @@ def show_category(request, category_slug, template_name):
 
 def show_product(request, product_slug, template_name):
     """ view for each product page, with POST vs GET detection """
-    p = get_object_or_404(Product, slug=product_slug)
-    # categories = p.categories.all()
+    product_cache_key = request.path
+    # get product from cache
+    p = cache.get(product_cache_key)
+    # if cache miss, fall back to db query
+    if not p:
+        p = get_object_or_404(Product.active, slug=product_slug)
+        # store in cache for next time
+        cache.set(product_cache_key, p, CACHE_TIMEOUT)
+
     categories = p.categories.filter(is_active=True)
     page_title = p.name
     meta_keywords = p.meta_keywords
