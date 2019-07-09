@@ -1,6 +1,7 @@
 # catalog/tests.py
 from django.test import TestCase, Client
 from django.urls import reverse
+from django.contrib.auth import SESSION_KEY
 import http
 
 
@@ -8,6 +9,10 @@ class NewUserTestCase(TestCase):
 
     def setUp(self):
         self.client = Client()
+        # deprecated
+        # logged_in = self.client.session.has_key(SESSION_KEY)
+        # self.assertFalse(logged_in)
+        self.assertFalse(SESSION_KEY in self.client.session)
 
     def test_view_homepage(self):
         home_url = reverse('catalog:catalog_home')
