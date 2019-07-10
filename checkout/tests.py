@@ -4,8 +4,7 @@ from django.urls import reverse, resolve
 from http import HTTPStatus
 
 from checkout.forms import CheckoutForm
-from checkout.models import Order, OrderItem
-from catalog.models import Category, Product
+from catalog.models import Product
 from cart import cart
 from cart.models import CartItem
 
