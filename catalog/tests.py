@@ -3,11 +3,12 @@ from django.test import TestCase, Client
 from django.urls import reverse, resolve
 from django.contrib.auth import SESSION_KEY
 from django.views.defaults import page_not_found
+from django.db import IntegrityError
 from decimal import Decimal
 import http
 
 
-from catalog.models import Category, Product
+from catalog.models import Category, Product, ProductReview
 from catalog.forms import ProductAddToCartForm
 
 
@@ -130,6 +131,40 @@ class ProductTestCase(TestCase):
 
     def test_str(self):
         self.assertEqual(self.product.__str__(), self.product.name)
+
+
+class ProductReviewTestCase(TestCase):
+    """ tests the catalog.ProductReview model class """
+
+    def test_orphaned_product_review(self):
+        pr = ProductReview()
+        self.assertRaises(IntegrityError, pr.save)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
