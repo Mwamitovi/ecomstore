@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-from ecomstore.base_settings import *
+from ecomstore.settings_local import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'accounts',
     'search',
     'stats',
+    'caching',
 ]
 
 MIDDLEWARE = [
@@ -170,3 +171,8 @@ PRODUCTS_PER_PAGE = 12
 
 # search results from the highest-ranking 3 words
 PRODUCTS_PER_ROW = 4
+
+
+# Handling performance - CACHE
+
+CACHE_TIMEOUT = 60 * 60

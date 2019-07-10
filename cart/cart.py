@@ -1,11 +1,14 @@
 # cart/cart.py
 from catalog.models import Product
 from cart.models import CartItem
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
-from ecomstore import settings
+from ecomstore.settings import SESSION_COOKIE_DAYS
 import decimal
 import random
+from datetime import datetime, timedelta
+from django.conf import settings
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
+from django.db.models import Max
 
 
 CART_ID_SESSION_KEY = 'cart_id'
@@ -121,24 +124,28 @@ def is_empty(request):
 
 
 def empty_cart(request):
+    """ empties the shopping cart of the current customer """
     user_cart = get_cart_items(request)
     user_cart.delete()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def remove_old_cart_items():
+    """
+    1. Calculate date of 90 days ago (or session lifespan)
+    2. Create a list of cart IDs that haven't been modified
+    3. Delete those CartItem instances
+    """
+    print("Removing old carts")
+    # calculate date of SESSION_COOKIE_DAYS days ago
+    remove_before = datetime.now() + timedelta(days=-settings.SESSION_COOKIE_DAYS)
+    cart_ids = []
+    old_items = CartItem.objects.values('cart_id').annotate(
+        last_changed=Max('date_added')).filter(
+        last_changed__It=remove_before).order_by()
+    # create a list of cart IDs that haven't been modified
+    for item in old_items:
+        cart_ids.append(item['cart_id'])
+    to_remove = CartItem.objects.filter(cart_id__in=cart_ids)
+    # delete those CartItem instances
+    to_remove.delete()
+    print(str(len(cart_ids)) + " carts were removed")

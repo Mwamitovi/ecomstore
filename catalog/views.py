@@ -1,22 +1,23 @@
 # catalog/views.py
 import json
 from django.shortcuts import get_object_or_404, render
+from catalog.models import Category, Product
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.core import urlresolvers
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
 
-from ecomstore.settings import PRODUCTS_PER_ROW
 from catalog.models import Category, Product, ProductReview
 from catalog.forms import ProductAddToCartForm, ProductReviewForm
 from utils import context_processors
 from cart import cart
 from stats import stats
-
 import tagging
 from tagging.models import Tag, TaggedItem
 from tagging.utils import LOGARITHMIC
+from ecomstore.settings import PRODUCTS_PER_ROW, CACHE_TIMEOUT
 
 
 def index(request, template_name):
@@ -36,7 +37,12 @@ def index(request, template_name):
 
 
 def show_category(request, category_slug, template_name):
-    c = get_object_or_404(Category, slug=category_slug)
+    category_cache_key = request.path
+    c = cache.get(category_cache_key)
+    if not c:
+        c = get_object_or_404(Category.active, slug=category_slug)
+        cache.set(category_cache_key, c, CACHE_TIMEOUT)
+
     products = c.product_set.all()
     page_title = c.name
     meta_keywords = c.meta_keywords
@@ -54,8 +60,15 @@ def show_category(request, category_slug, template_name):
 
 def show_product(request, product_slug, template_name):
     """ view for each product page, with POST vs GET detection """
-    p = get_object_or_404(Product, slug=product_slug)
-    # categories = p.categories.all()
+    product_cache_key = request.path
+    # get product from cache
+    p = cache.get(product_cache_key)
+    # if cache miss, fall back to db query
+    if not p:
+        p = get_object_or_404(Product.active, slug=product_slug)
+        # store in cache for next time
+        cache.set(product_cache_key, p, CACHE_TIMEOUT)
+
     categories = p.categories.filter(is_active=True)
     page_title = p.name
     meta_keywords = p.meta_keywords

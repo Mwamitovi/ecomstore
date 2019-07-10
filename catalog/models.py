@@ -5,11 +5,15 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
 from tagging.registry import register
+from django.db.models.signals import post_save, post_delete
+
+from caching.caching import cache_update, cache_evict
 
 
 class ActiveCategoryManager(models.Manager):
-    """ Manager class
-        to return only those categories where each instance is active
+    """
+    Manager class
+    to return only those categories where each instance is active
     """
     def get_queryset(self):
         return super(ActiveCategoryManager, self)\
@@ -18,8 +22,8 @@ class ActiveCategoryManager(models.Manager):
 
 @python_2_unicode_compatible
 class Category(models.Model):
-    """ Model class containing information about
-        a category in the product catalog
+    """
+    Model class containing information about a category in the product catalog
     """
     name = models.CharField(max_length=50)
     slug = models.SlugField(
@@ -52,18 +56,21 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-    # @models.permalink
     def get_absolute_url(self):
-        # return 'catalog_category', (), {'category_slug': self.slug}
         return reverse(
             'catalog:catalog_category',
             kwargs={'category_slug': self.slug}
         )
 
+    @property
+    def cache_key(self):
+        return self.get_absolute_url()
+
 
 class ActiveProductManager(models.Manager):
-    """ Manager class
-        to return only those products where each instance is "active"
+    """
+    Manager class
+    to return only those products where each instance is "active"
     """
     def get_query_set(self):
         return super(ActiveProductManager, self)\
@@ -71,8 +78,9 @@ class ActiveProductManager(models.Manager):
 
 
 class FeaturedProductManager(models.Manager):
-    """ Manager class
-        to return only those products where each instance is "featured"
+    """
+    Manager class
+    to return only those products where each instance is "featured"
     """
     def get_query_set(self):
         return super(FeaturedProductManager, self)\
@@ -81,9 +89,10 @@ class FeaturedProductManager(models.Manager):
 
 @python_2_unicode_compatible
 class Product(models.Model):
-    """ Model class containing information about a product;
-        instances of this class are what the user adds to their
-        shopping cart and can subsequently purchase
+    """
+    Model class containing information about a product;
+    instances of this class are what the user adds to their
+    shopping cart and can subsequently purchase
     """
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(
@@ -136,13 +145,15 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-    # @models.permalink
     def get_absolute_url(self):
-        # return 'catalog_product', (), {'product_slug': self.slug}
         return reverse(
             'catalog:catalog_product',
             kwargs={'product_slug': self.slug}
         )
+
+    @property
+    def cache_key(self):
+        return self.get_absolute_url()
 
     @property
     def sale_price(self):
@@ -153,9 +164,10 @@ class Product(models.Model):
 
     # usually purchased with this product...
     def cross_sells(self):
-        """ Gets other Product instances that
-            have been combined with the current instance in past orders.
-            Includes any orders placed by anonymous users that haven't registered
+        """
+        Gets other Product instances that
+        have been combined with the current instance in past orders.
+        Includes any orders placed by anonymous users that haven't registered
         """
         from checkout.models import Order, OrderItem
         orders = Order.objects.filter(orderitem__product=self)
@@ -165,10 +177,11 @@ class Product(models.Model):
 
     # users who purchased this product also bought....
     def cross_sells_user(self):
-        """ Gets other Product instances that were ordered by
-            other registered customers who also ordered the current instance.
-            Uses all past orders of each registered customer, and
-            not just the order in which the current instance was purchased
+        """
+        Gets other Product instances that were ordered by
+        other registered customers who also ordered the current instance.
+        Uses all past orders of each registered customer, and
+        not just the order in which the current instance was purchased
         """
         # noinspection PyUnresolvedReferences
         from checkout.models import Order, OrderItem
@@ -179,9 +192,10 @@ class Product(models.Model):
         return products
 
     def cross_sells_hybrid(self):
-        """ Gets other Product instances that were both combined with
-            the current instance in orders placed by unregistered customers,
-            and also all products that were ordered by registered customers
+        """
+        Gets other Product instances that were both combined with
+        the current instance in orders placed by unregistered customers,
+        and also all products that were ordered by registered customers
         """
         from checkout.models import Order, OrderItem
         from django.contrib.auth.models import User
@@ -227,3 +241,24 @@ class ProductReview(models.Model):
     objects = models.Manager()
     # Approved ProductReview Manager
     approved = ActiveProductReviewManager()
+
+    
+# Attach signals to classes to update the
+# cache data on save and delete operations
+# -------------
+# Product model
+post_save.connect(cache_update, sender=Product)
+post_delete.connect(cache_evict, sender=Product)
+# Category model
+post_save.connect(cache_update, sender=Category)
+post_delete.connect(cache_evict, sender=Category)
+
+
+
+
+
+
+
+
+
+
