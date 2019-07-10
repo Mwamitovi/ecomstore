@@ -3,7 +3,9 @@ from django.test import TestCase, Client
 from django.urls import reverse, resolve
 from django.contrib.auth import SESSION_KEY
 from django.views.defaults import page_not_found
+from decimal import Decimal
 import http
+
 
 from catalog.models import Category, Product
 from catalog.forms import ProductAddToCartForm
@@ -99,8 +101,35 @@ class ActiveProductManagerTestCase(TestCase):
         self.assertTemplateNotUsed(response, _template_name)
 
 
+class ProductTestCase(TestCase):
+    """
+    tests the methods and custom properties on the catalog.Product model class
+    """
+    def setUp(self):
+        self.product = Product.active.all()
+        self.product.price = Decimal('199.99')
+        self.product.save()
+        self.client = Client()
 
+    def test_sale_price(self):
+        self.product.old_price = Decimal('220.00')
+        self.product.save()
+        self.failIfEqual(self.product.sale_price, None)
+        self.assertEqual(self.product.sale_price, self.product.price)
 
+    def test_no_sale_price(self):
+        self.product.old_price = Decimal('0.00')
+        self.product.save()
+        self.failUnlessEqual(self.product.sale_price, None)
+
+    def test_absolute_url(self):
+        url = self.product.get_absolute_url()
+        response = self.client.get(url)
+        self.failUnless(response)
+        self.assertEqual(response.status_code, http.HTTPStatus.OK)
+
+    def test_str(self):
+        self.assertEqual(self.product.__str__(), self.product.name)
 
 
 
