@@ -5,6 +5,7 @@ from django.db import IntegrityError
 from http import HTTPStatus
 
 from catalog.models import Product
+from catalog.forms import ProductAddToCartForm
 from cart.models import CartItem
 from cart import cart
 
@@ -75,7 +76,18 @@ class CartTestCase(TestCase):
         # check if the latest cart item is the correct product
         self.failUnlessEqual(last_item.product, self.product)
 
-
+    def test_add_product_empty_quantity(self):
+        """
+        POSTing a request with an empty quantity box will
+        display 'required' form error message
+        """
+        product_url = self.product.get_absolute_url()
+        postdata = {'product_slug': self.product.slug, 'quantity': ''}
+        response = self.client.post(product_url, postdata)
+        expected_error = str(
+            ProductAddToCartForm.base_fields['quantity'].error_messages['required']
+        )
+        self.assertFormError(response, 'form', 'quantity', errors=[expected_error])
 
 
 
