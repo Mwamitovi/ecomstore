@@ -106,8 +106,11 @@ class ProductTestCase(TestCase):
     """
     tests the methods and custom properties on the catalog.Product model class
     """
+
+    fixtures = ['catalog/fixtures/initial_data']
+
     def setUp(self):
-        self.product = Product.active.all()
+        self.product = Product.active.all()[0]
         self.product.price = Decimal('199.99')
         self.product.save()
         self.client = Client()
