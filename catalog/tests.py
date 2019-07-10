@@ -16,7 +16,7 @@ from catalog.forms import ProductAddToCartForm
 class NewUserTestCase(TestCase):
     """ tests an Anonymous user browsing the site pages """
 
-    fixtures = ['initial_data']
+    fixtures = ['catalog/fixtures/initial_data']
 
     def setUp(self):
         self.client = Client()
@@ -55,8 +55,7 @@ class NewUserTestCase(TestCase):
 
     def test_view_product(self):
         """
-        test product view loads
-        - similar to our category test
+        test product view loads - similar to our category test
         """
         product = Product.active.all()[0]
         product_url = product.get_absolute_url()
@@ -84,7 +83,7 @@ class ActiveProductManagerTestCase(TestCase):
     and that inactive products return the 404 Not Found template
     """
 
-    fixtures = ['initial_data']
+    fixtures = ['catalog/fixtures/initial_data']
 
     def setUp(self):
         self.client = Client()
@@ -137,6 +136,8 @@ class ProductTestCase(TestCase):
 class ProductReviewTestCase(TestCase):
     """ tests the catalog.ProductReview model class """
 
+    fixtures = ['initial_data']
+
     def test_orphaned_product_review(self):
         """
         attempt to save ProductReview instance with no product raises IntegrityError
@@ -155,44 +156,3 @@ class ProductReviewTestCase(TestCase):
         for field in pr._meta.fields:
             if field.has_default():
                 self.assertEqual(pr.__dict__[field.name], field.default)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
