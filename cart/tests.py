@@ -18,6 +18,7 @@ class CartTestCase(TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.csrf_client = Client(enforce_csrf_checks=True)
         self.product = Product.active.all()[0]
 
     def test_cart(self):
@@ -118,34 +119,17 @@ class CartTestCase(TestCase):
         )
         self.assertFormError(response, 'form', 'quantity', [expected_error])
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    def test_add_to_cart_fails_csrf(self):
+        """
+        adding product fails without including the
+        CSRF token to POST request parameters
+        """
+        quantity = 2
+        product_url = self.product.get_absolute_url()
+        response = self.csrf_client.get(product_url)
+        self.assertEqual(response.status_code, HTTPStatus.OK )
+        # perform the post of adding to the cart
+        postdata = {'product_slug': self.product.slug, 'quantity': quantity}
+        response = self.csrf_client.post(product_url, postdata)
+        # assert forbidden error due to missing CSRF input
+        self.assertEqual(response.status_code, HTTPStatus.FORBIDDEN)
