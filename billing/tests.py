@@ -1,3 +1,11 @@
-from django.test import TestCase
+# billing/tests.py
+from django.test import TestCase, Client
+# from billing.passkey import encrypt, decrypt
 
-# Create your tests here.
+
+# class EncryptionTestCase(TestCase):
+#
+#     def test_encrypt_decrypt(self):
+#         to_encrypt = 'Some text here'
+#         self.failUnlessEqual(to_encrypt, decrypt(encrypt(to_encrypt)))
+#         self.failIfEqual(to_encrypt, encrypt(to_encrypt))
