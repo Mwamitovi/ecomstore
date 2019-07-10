@@ -4,6 +4,7 @@ from django.urls import reverse, resolve
 from django.contrib.auth import SESSION_KEY
 from django.views.defaults import page_not_found
 from django.db import IntegrityError
+from django.contrib.auth.models import User
 from decimal import Decimal
 import http
 
@@ -137,10 +138,23 @@ class ProductReviewTestCase(TestCase):
     """ tests the catalog.ProductReview model class """
 
     def test_orphaned_product_review(self):
+        """
+        attempt to save ProductReview instance with no product raises IntegrityError
+        """
         pr = ProductReview()
         self.assertRaises(IntegrityError, pr.save)
 
-
+    def test_product_review_defaults(self):
+        """
+        attempt to save ProductReview instance with fields empty resorts to class defaults
+        """
+        _user = User.objects.all()[0]
+        _product = Product.active.all()[0]
+        pr = ProductReview(user=_user, product=_product)
+        pr.save()
+        for field in pr._meta.fields:
+            if field.has_default():
+                self.assertEqual(pr.__dict__[field.name], field.default)
 
 
 
