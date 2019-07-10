@@ -87,11 +87,36 @@ class CartTestCase(TestCase):
         expected_error = str(
             ProductAddToCartForm.base_fields['quantity'].error_messages['required']
         )
-        self.assertFormError(response, 'form', 'quantity', errors=[expected_error])
+        self.assertFormError(response, 'form', 'quantity', [expected_error])
 
+    def test_add_product_zero_quantity(self):
+        """
+        POSTing a request with an 0 quantity will
+        display 'min_value' form error message
+        """
+        product_url = self.product.get_absolute_url()
+        postdata = {'product_slug': self.product.slug, 'quantity': 0}
+        response = self.client.post(product_url, postdata)
+        # need to concatenate the min_value onto error_text containing %s
+        error_text = str(
+            ProductAddToCartForm.base_fields['quantity'].error_messages['min_value']
+        )
+        _min_value = ProductAddToCartForm.base_fields['quantity'].min_value
+        expected_error = error_text % _min_value
+        self.assertFormError(response, 'form', 'quantity', [expected_error])
 
-
-
+    def test_add_product_invalid_quantity(self):
+        """
+        POSTing a request with a non-integer quantity will
+        display 'invalid' form error message
+        """
+        product_url = self.product.get_absolute_url()
+        postdata = {'product_slug': self.product.slug, 'quantity': 'go'}
+        response = self.client.post(product_url, postdata)
+        expected_error = str(
+            ProductAddToCartForm.base_fields['quantity'].error_messages['invalid']
+        )
+        self.assertFormError(response, 'form', 'quantity', [expected_error])
 
 
 
