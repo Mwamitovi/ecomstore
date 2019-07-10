@@ -6,7 +6,7 @@ from django.views.defaults import page_not_found
 from django.db import IntegrityError
 from django.contrib.auth.models import User
 from decimal import Decimal
-import http
+from http import HTTPStatus
 
 
 from catalog.models import Category, Product, ProductReview
@@ -32,7 +32,7 @@ class NewUserTestCase(TestCase):
         self.failUnless(response)
         # check that status code of response is success
         # (http.HTTPStatus.OK = 200)
-        self.assertEqual(response.status_code, http.HTTPStatus.OK)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_view_category(self):
         """ test category view loads """
@@ -46,7 +46,7 @@ class NewUserTestCase(TestCase):
         # test that we got a response
         self.failUnless(response)
         # test that the HTTP status code is "OK"
-        self.assertEqual(response.status_code, http.HTTPStatus.OK)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         # test that we used the category.html template in response
         self.assertTemplateUsed(response, _template_name)
         # test that category page contains category information
@@ -63,7 +63,7 @@ class NewUserTestCase(TestCase):
         _template_name = url_entry[2]['template_name']
         response = self.client.get(product_url)
         self.failUnless(response)
-        self.assertEqual(response.status_code, http.HTTPStatus.OK)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertTemplateUsed(response, _template_name)
         self.assertContains(response, product.name)
         self.assertContains(response, product.description)
@@ -130,7 +130,7 @@ class ProductTestCase(TestCase):
         url = self.product.get_absolute_url()
         response = self.client.get(url)
         self.failUnless(response)
-        self.assertEqual(response.status_code, http.HTTPStatus.OK)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_str(self):
         self.assertEqual(self.product.__str__(), self.product.name)
